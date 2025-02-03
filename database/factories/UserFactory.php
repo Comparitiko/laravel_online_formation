@@ -23,9 +23,23 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+
+        // Generate a random DNI number
+        $dniNumbers = $this->faker->unique()->numerify('########');
+        // Generate a random letter
+        $letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        $letter = $letters[$dniNumbers % 23];
+
         return [
+            'dni' => $dniNumbers . $letter,
             'name' => fake()->name(),
+            'surnames' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
+            'phone_number' => fake()->numerify('#########'),
+            'address' => fake()->address(),
+            'city' => fake()->city(),
+            'specialty' => null,
+            'role' => 'student',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
