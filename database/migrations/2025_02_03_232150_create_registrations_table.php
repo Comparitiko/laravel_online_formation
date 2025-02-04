@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('registrations', function (Blueprint $table) {
             $table->foreignIdFor(Course::class)->constrained();
             $table->foreignIdFor(User::class, 'student_id')->constrained();
-            $table->enum('state', ['pendiente', 'confirmado', 'cancelado'])->default('pendinente');
+            $table->enum('state', ['pendiente', 'confirmado', 'cancelado'])->default('pendiente');
             $table->timestamps();
             $table->primary(['course_id', 'student_id']);
         });
