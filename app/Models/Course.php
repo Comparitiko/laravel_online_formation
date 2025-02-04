@@ -27,4 +27,24 @@ class Course extends Model
     {
         return $this->hasMany(CourseMaterial::class);
     }
+
+    public function students_registrated(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'registrations',
+            'course_id',
+            'student_id'
+        )->withPivot('state');
+    }
+
+    public function students_evaluations(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'evaluations',
+            'course_id',
+            'student_id'
+        )->withPivot(['final_note', 'comments']);
+    }
 }
