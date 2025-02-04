@@ -37,6 +37,7 @@ class UserFactory extends Factory
     {
         return [
             'dni' => $this->generateRandomDNI(),
+            'username' => $this->faker->userName,
             'name' => $this->faker->name(),
             'surnames' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail,
