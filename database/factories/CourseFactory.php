@@ -22,9 +22,9 @@ class CourseFactory extends Factory
             'name' => fake()->unique()->word(),
             'description' => fake()->paragraph(),
             'duration' => fake()->numberBetween(10, 50),
-            'state' => fake()->randomElement(['active', 'finished', 'cancelled']),
+            'state' => fake()->randomElement(['activo', 'finalizado', 'cancelado']),
             'category_id' => Category::all()->random()->id,
-            'teacher_id' => User::all()->where('role', 'teacher')->random()->id,
+            'teacher_id' => User::all()->where('role', 'profesor')->random()->id,
         ];
     }
 }
