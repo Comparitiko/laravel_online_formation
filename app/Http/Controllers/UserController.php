@@ -34,7 +34,7 @@ class UserController extends Controller
 
         // Check if the user exists and the password is correct
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid email or password'], 401);
+            return response()->json(['message' => 'Invalid email or password'], 400);
         }
 
         // Create a new token for the user
@@ -42,7 +42,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'Login successful',
-            'token' => $token
+            'token' => explode('|', $token)[1]
         ], 201);
     }
 
@@ -62,7 +62,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User created successfully',
-            'token' => $token
+            'token' => explode('|', $token)[1]
         ], 201);
     }
 }
