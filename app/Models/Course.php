@@ -13,12 +13,12 @@ class Course extends Model
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory;
 
-    public function categories(): BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function profesor(): BelongsTo
+    public function teacher(): BelongsTo
     {
         return $this->belongsTo(User::class, 'profesor_id');
     }
@@ -28,23 +28,13 @@ class Course extends Model
         return $this->hasMany(CourseMaterial::class);
     }
 
-    public function students_registrated(): BelongsToMany
+    public function registrations(): HasMany
     {
-        return $this->belongsToMany(
-            User::class,
-            'registrations',
-            'course_id',
-            'student_id'
-        )->withPivot('state');
+        return $this->hasMany(Registration::class);
     }
 
-    public function students_evaluations(): BelongsToMany
+    public function evaluations(): HasMany
     {
-        return $this->belongsToMany(
-            User::class,
-            'evaluations',
-            'course_id',
-            'student_id'
-        )->withPivot(['final_note', 'comments']);
+        return $this->hasMany(Evaluation::class);
     }
 }

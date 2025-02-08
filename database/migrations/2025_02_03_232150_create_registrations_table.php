@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RegistrationState;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +17,7 @@ return new class extends Migration
         Schema::create('registrations', function (Blueprint $table) {
             $table->foreignIdFor(Course::class)->constrained();
             $table->foreignIdFor(User::class, 'student_id')->constrained();
-            $table->enum('state', ['pendiente', 'confirmado', 'cancelado'])->default('pendiente');
+            $table->enum('state', RegistrationState::cases())->default(RegistrationState::PENDING);
             $table->timestamps();
             $table->primary(['course_id', 'student_id']);
         });

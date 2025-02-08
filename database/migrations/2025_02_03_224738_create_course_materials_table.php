@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\MaterialType;
 use App\Models\Course;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('course_materials', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['pdf', 'video', 'link', 'repository']);
+            $table->enum('type', MaterialType::cases());
             $table->string('url');
             $table->foreignIdFor(Course::class)->constrained();
             $table->timestamps();

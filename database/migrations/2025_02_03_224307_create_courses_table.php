@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CourseState;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\User;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('duration')->unsigned();
-            $table->enum('state', ['activo', 'finalizado', 'cancelado'])->default('activo');
+            $table->enum('state', CourseState::cases())->default(CourseState::ACTIVE);
             $table->foreignIdFor(User::class, 'teacher_id')->constrained();
             $table->foreignIdFor(Category::class)->constrained();
             $table->timestamps();
