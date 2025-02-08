@@ -46,7 +46,7 @@ class UserFactory extends Factory
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),
             'specialty' => null,
-            'role' => UserRole::STUDENT->value,
+            'role' => UserRole::STUDENT,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -69,7 +69,7 @@ class UserFactory extends Factory
             'address' => null,
             'city' => null,
             'specialty' => null,
-            'role' => UserRole::ADMIN->value,
+            'role' => UserRole::ADMIN,
             'password' => static::$password ??= Hash::make('admin'),
         ]);
     }
@@ -80,7 +80,7 @@ class UserFactory extends Factory
             'address' => null,
             'city' => null,
             'specialty' => $this->faker->jobTitle,
-            'role' => UserRole::TEACHER->value,
+            'role' => UserRole::TEACHER,
             'password' => static::$password ??= Hash::make('profesor'),
         ]);
     }

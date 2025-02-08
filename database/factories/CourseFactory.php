@@ -26,7 +26,7 @@ class CourseFactory extends Factory
             'duration' => fake()->numberBetween(10, 50),
             'state' => fake()->randomElement(CourseState::values()),
             'category_id' => Category::all()->random()->id,
-            'teacher_id' => User::all()->where('role', UserRole::TEACHER->value)->random()->id,
+            'teacher_id' => User::all()->where('role', UserRole::TEACHER)->random()->id,
         ];
     }
 }

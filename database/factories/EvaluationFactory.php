@@ -21,7 +21,7 @@ class EvaluationFactory extends Factory
     {
         return [
             'course_id' => Course::all()->random()->id,
-            'student_id' => User::all()->where('role', UserRole::STUDENT->value)->random()->id,
+            'student_id' => User::all()->where('role', UserRole::STUDENT)->random()->id,
             'final_note' => fake()->randomFloat(1, 0, 10),
             'comments' => fake()->paragraph(2),
         ];
