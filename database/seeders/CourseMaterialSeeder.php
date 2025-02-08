@@ -13,6 +13,6 @@ class CourseMaterialSeeder extends Seeder
      */
     public function run(): void
     {
-        CourseMaterial::factory(30)->create();
+        CourseMaterial::factory(100)->create();
     }
 }

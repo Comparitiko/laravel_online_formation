@@ -15,15 +15,15 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Create students
-        User::factory(10)->create();
+        User::factory(15)->create();
 
         // Create profesors
-        User::factory(2)->teacher()->create();
+        User::factory(5)->teacher()->create();
 
         // Create admin
         User::factory(1)->admin()->create();
 
         // Create unverified student
-        User::factory(2)->unverified()->create();
+        User::factory(4)->unverified()->create();
     }
 }
