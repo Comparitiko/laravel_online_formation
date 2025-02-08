@@ -18,4 +18,11 @@ class CourseMaterial extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    protected function casts(): array
+    {
+        return [
+            'type' => MaterialType::class,
+        ];
+    }
 }

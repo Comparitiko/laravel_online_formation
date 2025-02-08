@@ -29,4 +29,11 @@ class Registration extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    protected function casts(): array
+    {
+        return [
+            'state' => RegistrationState::class,
+        ];
+    }
 }

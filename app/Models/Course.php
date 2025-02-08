@@ -14,8 +14,6 @@ class Course extends Model
     /** @use HasFactory<\Database\Factories\CourseFactory> */
     use HasFactory;
 
-    protected $casts = ['state' => CourseState::class];
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -23,7 +21,7 @@ class Course extends Model
 
     public function teacher(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'profesor_id');
+        return $this->belongsTo(User::class, 'teacher_id');
     }
 
     public function materials(): HasMany
@@ -39,5 +37,12 @@ class Course extends Model
     public function evaluations(): HasMany
     {
         return $this->hasMany(Evaluation::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'state' => CourseState::class,
+        ];
     }
 }

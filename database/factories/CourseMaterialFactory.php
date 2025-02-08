@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\MaterialType;
 use App\Models\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class CourseMaterialFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => fake()->randomElement(['pdf', 'video', 'link', 'repository']),
+            'type' => fake()->randomElement(MaterialType::cases()),
             'url' => fake()->url(),
             'course_id' => Course::all()->random()->id,
         ];

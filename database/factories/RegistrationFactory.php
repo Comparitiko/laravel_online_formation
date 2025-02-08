@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\RegistrationState;
+use App\Enums\UserRole;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,9 +21,9 @@ class RegistrationFactory extends Factory
     public function definition(): array
     {
         return [
-            'student_id' => User::all()->where('role', 'estudiante')->random()->id,
+            'student_id' => User::all()->where('role', UserRole::STUDENT->value)->random()->id,
             'course_id' => Course::all()->random()->id,
-            'state' => fake()->randomElement(['pendiente', 'confirmado', 'cancelado']),
+            'state' => fake()->randomElement(RegistrationState::cases()),
         ];
     }
 }
