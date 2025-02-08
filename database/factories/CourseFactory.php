@@ -22,7 +22,7 @@ class CourseFactory extends Factory
     {
         return [
             'name' => fake()->unique()->word(),
-            'description' => fake()->paragraph(),
+            'description' => fake()->paragraph(2),
             'duration' => fake()->numberBetween(10, 50),
             'state' => fake()->randomElement(CourseState::values()),
             'category_id' => Category::all()->random()->id,
