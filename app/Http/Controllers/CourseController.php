@@ -62,4 +62,14 @@ class CourseController extends Controller
     {
         //
     }
+
+    public function api_index()
+    {
+        return Course::all();
+    }
+
+    public function api_show(Course $course)
+    {
+        return $course;
+    }
 }

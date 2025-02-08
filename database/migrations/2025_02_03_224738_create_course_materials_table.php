@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('course_materials', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', MaterialType::cases());
+            $table->enum('type', MaterialType::values());
             $table->string('url');
             $table->foreignIdFor(Course::class)->constrained();
             $table->timestamps();

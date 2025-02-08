@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('specialty')->nullable();
             $table->string('password');
-            $table->enum('role', UserRole::cases())->default(UserRole::STUDENT);
+            $table->enum('role', UserRole::values())->default(UserRole::STUDENT->value);
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();

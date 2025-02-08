@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('registrations', function (Blueprint $table) {
             $table->foreignIdFor(Course::class)->constrained();
             $table->foreignIdFor(User::class, 'student_id')->constrained();
-            $table->enum('state', RegistrationState::cases())->default(RegistrationState::PENDING);
+            $table->enum('state', RegistrationState::values())->default(RegistrationState::PENDING->value);
             $table->timestamps();
             $table->primary(['course_id', 'student_id']);
         });
