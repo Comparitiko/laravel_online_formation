@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
-Route::get('/', function () {
-    return view('pages.welcome');
-});
+// Index route
+Route::get('/', [UserController::class, 'index'])->middleware(['auth']);
 
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
