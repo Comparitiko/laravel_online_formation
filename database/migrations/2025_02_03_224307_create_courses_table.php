@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description');
             $table->integer('duration')->unsigned();
             $table->enum('state', CourseState::values())->default(CourseState::ACTIVE->value);

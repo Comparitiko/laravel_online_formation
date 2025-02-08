@@ -72,4 +72,14 @@ class CourseController extends Controller
     {
         return $course;
     }
+
+    public function api_create(Request $request) {
+
+    }
+
+    public function api_delete(Course $course) {
+
+    }
+
+
 }
