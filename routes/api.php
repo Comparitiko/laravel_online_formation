@@ -10,21 +10,26 @@ Route::prefix('/v1')->group(function () {
   Route::middleware('auth:sanctum')->group(function () {
       // Courses routes
       Route::prefix('/courses')->group(function () {
+          // Anyone can see this routes
           Route::get('/', [CourseController::class, 'api_index']);
-          Route::get('/${id}', [CourseController::class, 'api_show']);
+          Route::get('/{id}', [CourseController::class, 'api_show']);
+
+          // Only admins can create and delete courses
           Route::post('/', [CourseController::class, 'api_create']);
-          Route::delete('/${id}', [CourseController::class, 'api_delete']);
+          Route::delete('/{id}', [CourseController::class, 'api_delete']);
       });
 
       // Students routes
       Route::prefix('/students')->group(function () {
-          Route::get('${dni}/registrations', [UserController::class, 'api_show_all_registrations']);
+          // Only admins and the student that owns the registration can see this routes
+          Route::get('/{dni}/registrations', [UserController::class, 'api_show_all_registrations']);
       });
 
       // Registrations routes
       Route::prefix('/registrations')->group(function () {
+          // User that owns the registration can create and delete registrations
           Route::post('/', [UserController::class, 'api_new_registration']);
-          Route::delete('/${id}', [UserController::class, 'api_delete_registration']);
+          Route::delete('/{id}', [UserController::class, 'api_delete_registration']);
       });
   });
 
