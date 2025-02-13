@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -7,6 +8,12 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/auth.php';
 
 // Index route
+Route::get('/prueba', function () {
+    return 'hola';
+})->middleware([
+    'auth',
+    'role:'. UserRole::STUDENT->value
+]);
 Route::get('/', [UserController::class, 'index'])->middleware(['auth']);
 
 Route::get('/dashboard', function () {
