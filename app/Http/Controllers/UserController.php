@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,6 +28,11 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Login a user for the API
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
     public function api_login(LoginRequest $request)
     {
         // Retrieve the user by email
@@ -38,7 +44,7 @@ class UserController extends Controller
         }
 
         // Create a new token for the user
-        $token = $user->createToken('api_auth')->plainTextToken;
+        $token = $this->createToken($user);
 
         return response()->json([
             'message' => 'Login successful',
@@ -46,6 +52,11 @@ class UserController extends Controller
         ], 201);
     }
 
+    /**
+     * Register a new user for the API
+     * @param RegisterRequest $request
+     * @return JsonResponse
+     */
     public function api_register(RegisterRequest $request) {
         // Check if the user already exists
         if (User::where('email', $request->email)->exists()) {
@@ -58,11 +69,21 @@ class UserController extends Controller
         $user->save();
 
         // Create a new token for the user
-        $token = $user->createToken('api_auth')->plainTextToken;
+        $token = $this->createToken($user);
 
         return response()->json([
             'message' => 'User created successfully',
             'token' => explode('|', $token)[1]
         ], 201);
+    }
+
+    /**
+     * Create a new token for a specific user
+     * @param User $user
+     * @return string $token
+     */
+    private function createToken(User $user)
+    {
+        return $user->createToken('api_auth', ['*'], now()->addDay())->plainTextToken;
     }
 }
