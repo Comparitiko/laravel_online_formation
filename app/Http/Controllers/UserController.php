@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\User;
+use App\Policies\RegistrationPolicy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,8 +18,13 @@ class UserController extends Controller
         return view('pages.dashboard');
     }
 
-    public function api_show_all_registrations() {
+    public function api_show_all_registrations(string $dni) {
+        // Retrieve the user by dni
+        $user = User::where('dni', $dni)->first;
 
+        $courses = $user->registrations->course;
+
+        return BaseCourseResource::collection($courses);
     }
 
     public function api_new_registration() {

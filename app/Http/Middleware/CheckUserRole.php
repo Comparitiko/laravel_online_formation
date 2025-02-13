@@ -20,6 +20,7 @@ class CheckUserRole
             return $next($request);
         }
 
-        abort(403);
+        // Return as not found because the user does not have the required role and not need to know the reason
+        abort(404);
     }
 }

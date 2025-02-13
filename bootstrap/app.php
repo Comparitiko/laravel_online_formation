@@ -32,19 +32,4 @@ return Application::configure(basePath: dirname(__DIR__))
             // Return a 404 page for all other requests
             return response()->view('pages.errors.404', [], 404);
         });
-
-        $exceptions->render(function (HttpException $e, Request $request) {
-            if ($e->getStatusCode() === 403) {
-                // Check if the request is an API request to return a JSON response
-                if ($request->is('api/*')) {
-                    return response()->json([
-                        'message' => 'Access denied',
-                    ], 403);
-                }
-
-                // Return a 403 page for all other requests
-                return response()->view('pages.errors.403', [], 403);
-
-            }
-        });
     })->create();
