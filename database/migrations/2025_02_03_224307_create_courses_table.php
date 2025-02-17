@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('description');
             $table->integer('duration')->unsigned();
             $table->enum('state', CourseState::values())->default(CourseState::ACTIVE->value);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate();
             $table->foreignIdFor(User::class, 'teacher_id')->constrained();
             $table->foreignIdFor(Category::class)->constrained();
-            $table->timestamps();
         });
     }
 
