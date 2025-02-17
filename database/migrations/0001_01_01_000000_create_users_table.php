@@ -27,8 +27,7 @@ return new class extends Migration
             $table->enum('role', UserRole::values())->default(UserRole::STUDENT->value);
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrentOnUpdate();
+            $table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

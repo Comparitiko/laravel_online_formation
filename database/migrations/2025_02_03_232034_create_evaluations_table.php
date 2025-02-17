@@ -18,8 +18,7 @@ return new class extends Migration
             $table->ForeignIdFor(User::class, 'student_id')->constrained();
             $table->double('final_note');
             $table->string('comments');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrentOnUpdate();
+            $table->timestamps();
             $table->primary(['course_id', 'student_id']);
         });
 

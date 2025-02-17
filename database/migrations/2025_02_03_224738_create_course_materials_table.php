@@ -18,8 +18,7 @@ return new class extends Migration
             $table->enum('type', MaterialType::values());
             $table->string('url');
             $table->foreignIdFor(Course::class)->constrained();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrentOnUpdate();
+            $table->timestamps();
         });
     }
 

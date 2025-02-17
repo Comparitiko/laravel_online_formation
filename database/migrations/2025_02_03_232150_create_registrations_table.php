@@ -18,8 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Course::class)->constrained();
             $table->foreignIdFor(User::class, 'student_id')->constrained();
             $table->enum('state', RegistrationState::values())->default(RegistrationState::PENDING->value);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrentOnUpdate();
+            $table->timestamps();
             $table->primary(['course_id', 'student_id']);
         });
     }
