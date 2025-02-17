@@ -15,5 +15,5 @@ Artisan::command('db:recreate', function () {
     $this->info('Database recreated and seeded!');
 });
 
-// Command to delete all expired tokens from the database when they are older than 24 hours.
-Schedule::command('sanctum:prune-expired --hours=24')->everyMinute();
+// Command to delete all expired tokens from the database when expired time is greater than 72 hours at 05:00.
+Schedule::command('sanctum:prune-expired --hours=72')->dailyAt('05:00');
