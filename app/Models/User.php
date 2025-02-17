@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,8 +58,36 @@ class User extends Authenticatable
         ];
     }
 
-    public function registrations(): HasMany
+    /**
+     * Get all the courses of the user if the user is a student
+     * @return BelongsToMany<Course>|null
+     */
+    public function confirmedCourses(): ?BelongsToMany
     {
-        return $this->hasMany(Registration::class);
+        // Only students can have registrations
+        if ($this->role === UserRole::STUDENT) {
+            return $this->belongsToMany(
+                Course::class,
+                'registrations',
+                'student_id',
+                'course_id'
+            )
+                ->wherePivot('state', RegistrationState::CONFIRMED);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the courses evaluations of the user if the user is a student
+     * @return BelongsToMany|null
+     */
+    public function coursesEvaluations(): ?BelongsToMany
+    {
+        if ($this->role === UserRole::STUDENT) {
+            return $this->belongsToMany(Course::class, 'evaluations', 'student_id', 'course_id');
+        }
+
+        return null;
     }
 }

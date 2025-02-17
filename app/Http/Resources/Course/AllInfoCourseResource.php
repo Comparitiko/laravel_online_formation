@@ -3,7 +3,7 @@
 namespace App\Http\Resources\Course;
 
 use App\Http\Resources\Category\BaseCategoryResource;
-use App\Http\Resources\User\BaseTeacherResource;
+use App\Http\Resources\Teacher\BaseTeacherResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

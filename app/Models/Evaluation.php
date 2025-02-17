@@ -10,14 +10,4 @@ class Evaluation extends Model
 {
     /** @use HasFactory<\Database\Factories\EvaluationFactory> */
     use HasFactory;
-
-    public function course(): BelongsTo
-    {
-        return $this->belongsTo(Course::class);
-    }
-
-    public function student(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Course\BaseCourseResource;
@@ -13,18 +14,30 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-
     public function index() {
         return view('pages.dashboard');
     }
 
-    public function api_show_all_registrations(string $dni) {
-        // Retrieve the user by dni
-        $user = User::where('dni', $dni)->first;
+    /**
+     * Show all the confirmed courses of a student with pagination for the api
+     * @param string $dni
+     * @return JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function api_show_all_registrations(Request $request, string $dni) {
+        // Retrieve the user by dni and student role
+        $student = User::where('dni', $dni)->where('role', UserRole::STUDENT)->get()->first();
 
-        $courses = $user->registrations->course;
+        // Check if the user exists
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
 
-        return BaseCourseResource::collection($courses);
+        // Get the limit from the request
+        $limit = $request->query('limit', 10);
+
+        $confirmedCourses = $student->confirmedCourses()->paginate($limit);
+
+        return BaseCourseResource::collection($confirmedCourses);
     }
 
     public function api_new_registration() {

@@ -29,14 +29,14 @@ class Course extends Model
         return $this->hasMany(CourseMaterial::class);
     }
 
-    public function registrations(): HasMany
+    public function registeredStudents(): BelongsToMany
     {
-        return $this->hasMany(Registration::class);
+        return $this->belongsToMany(User::class, 'registrations', 'course_id', 'student_id')->withPivot('confirmed');
     }
 
-    public function evaluations(): HasMany
+    public function studentsEvaluations(): BelongsToMany
     {
-        return $this->hasMany(Evaluation::class);
+        return $this->belongsToMany(User::class, 'evaluations', 'course_id', 'student_id');
     }
 
     protected function casts(): array
