@@ -7,7 +7,6 @@ use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -89,5 +88,15 @@ class User extends Authenticatable
         }
 
         return null;
+    }
+
+    public function isStudentOf(Course $course): bool
+    {
+        return $this->confirmedCourses->contains($course);
+    }
+
+    public function isSameUser(User $user): bool
+    {
+        return $this->id === $user->id;
     }
 }

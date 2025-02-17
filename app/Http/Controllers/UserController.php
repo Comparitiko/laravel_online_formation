@@ -7,9 +7,9 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\User;
-use App\Policies\RegistrationPolicy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -36,6 +36,11 @@ class UserController extends Controller
         $limit = $request->query('limit', 10);
 
         $confirmedCourses = $student->confirmedCourses()->paginate($limit);
+
+        // Check if the user can view the registrations of the student
+        if ($request->user()->cannot('view', $student)) {
+            abort(404);
+        }
 
         return BaseCourseResource::collection($confirmedCourses);
     }
