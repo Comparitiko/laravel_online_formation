@@ -5,10 +5,9 @@ namespace App\Models;
 use App\Enums\RegistrationState;
 use Database\Factories\RegistrationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Registration extends Model
+class Registration extends Pivot
 {
     /** @use HasFactory<RegistrationFactory> */
     use HasFactory;

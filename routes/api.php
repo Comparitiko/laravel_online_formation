@@ -23,13 +23,13 @@ Route::prefix('/v1')->group(function () {
       Route::prefix('/students')->group(function () {
           // Only admins and the student that owns the registration can see this routes
           Route::get('/{dni}/registrations', [UserController::class, 'api_show_all_registrations']);
+          Route::delete('/{dni}/registrations/{course_id}', [UserController::class, 'api_delete_registration']);
       });
 
       // Registrations routes
       Route::prefix('/registrations')->group(function () {
           // User that owns the registration can create and delete registrations
           Route::post('/', [UserController::class, 'api_new_registration']);
-          Route::delete('/{id}', [UserController::class, 'api_delete_registration']);
       });
   });
 

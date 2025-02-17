@@ -71,7 +71,7 @@ class User extends Authenticatable
                 'student_id',
                 'course_id'
             )
-                ->wherePivot('state', RegistrationState::CONFIRMED);
+                ->wherePivot('state', RegistrationState::CONFIRMED)->using(Registration::class);
         }
 
         return null;
@@ -84,7 +84,7 @@ class User extends Authenticatable
     public function coursesEvaluations(): ?BelongsToMany
     {
         if ($this->role === UserRole::STUDENT) {
-            return $this->belongsToMany(Course::class, 'evaluations', 'student_id', 'course_id');
+            return $this->belongsToMany(Course::class, 'evaluations', 'student_id', 'course_id')->using(Evaluation::class);
         }
 
         return null;
@@ -92,11 +92,17 @@ class User extends Authenticatable
 
     public function isStudentOf(Course $course): bool
     {
-        return $this->confirmedCourses->contains($course);
+        return $this->studentCourses->contains($course);
     }
 
     public function isSameUser(User $user): bool
     {
         return $this->id === $user->id;
+    }
+
+    public function studentCourses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class, 'registrations', 'student_id', 'course_id')->using
+            (Registration::class)->using(Registration::class);
     }
 }
