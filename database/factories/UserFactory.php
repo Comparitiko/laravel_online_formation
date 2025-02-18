@@ -25,13 +25,15 @@ class UserFactory extends Factory
         // Generate a random letter
         $letters = 'TRWAGMYFPDXBNJZSQVHLCKE';
         $letter = $letters[$dniNumbers % 23];
-        return $dniNumbers . $letter;
+
+        return $dniNumbers.$letter;
     }
 
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     *
      * @throws RandomException
      */
     public function definition(): array

@@ -10,10 +10,8 @@ class CoursePolicy
 {
     /**
      * Check if user can do all the actions
-     * @param User $user
-     * @return bool|null
      */
-    public function before(User $user): bool|null
+    public function before(User $user): ?bool
     {
         if ($user->role === UserRole::ADMIN) {
             return true;
@@ -33,7 +31,10 @@ class CoursePolicy
     public function view(User $user, Course $course): bool
     {
         // Only admins and the teacher of the course can view the course
-        if ($user->role === UserRole::ADMIN) return true;
+        if ($user->role === UserRole::ADMIN) {
+            return true;
+        }
+
         return false;
     }
 
@@ -52,9 +53,15 @@ class CoursePolicy
     public function update(User $user, Course $course): bool
     {
         // Only admins, the teacher of the course and the student can update the registrations
-        if ($user->role === UserRole::ADMIN) return true;
-        if ($user->role === UserRole::TEACHER && $registration->course->teacher->id === $user->id) return true;
-        if ($user->id === $registration->student->id) return true;
+        if ($user->role === UserRole::ADMIN) {
+            return true;
+        }
+        if ($user->role === UserRole::TEACHER && $registration->course->teacher->id === $user->id) {
+            return true;
+        }
+        if ($user->id === $registration->student->id) {
+            return true;
+        }
 
         return false;
     }
@@ -65,9 +72,15 @@ class CoursePolicy
     public function delete(User $user, Course $course): bool
     {
         // Only admins, the teacher of the course and the student can delete the registrations
-        if ($user->role === UserRole::ADMIN) return true;
-        if ($user->role === UserRole::TEACHER && $registration->course->teacher->id === $user->id) return true;
-        if ($user->id === $registration->student->id) return true;
+        if ($user->role === UserRole::ADMIN) {
+            return true;
+        }
+        if ($user->role === UserRole::TEACHER && $registration->course->teacher->id === $user->id) {
+            return true;
+        }
+        if ($user->id === $registration->student->id) {
+            return true;
+        }
 
         return false;
     }
@@ -78,7 +91,9 @@ class CoursePolicy
     public function restore(User $user, Course $course): bool
     {
         // Only admins can restore the registration
-        if ($user->role === UserRole::ADMIN) return true;
+        if ($user->role === UserRole::ADMIN) {
+            return true;
+        }
 
         return false;
     }
@@ -89,7 +104,10 @@ class CoursePolicy
     public function forceDelete(User $user, Course $course): bool
     {
         // Only admins can permanently delete the registration
-        if ($user->role === UserRole::ADMIN) return true;
+        if ($user->role === UserRole::ADMIN) {
+            return true;
+        }
+
         return false;
     }
 }

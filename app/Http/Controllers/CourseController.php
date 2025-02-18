@@ -77,53 +77,65 @@ class CourseController extends Controller
         $state = $request->get('state');
 
         // Get all courses with the given category and state
-        if($category && $state) {
+        if ($category && $state) {
             // Get the category name
             $categoryName = Category::where('course_area_name', $category)->get()->first();
 
-            if (!$categoryName) return response()->json(['message' => 'Invalid category'], 400);
+            if (! $categoryName) {
+                return response()->json(['message' => 'Invalid category'], 400);
+            }
 
             // Check if the state is valid
             $states = CourseState::values();
-            if (!in_array($state, $states)) return response()->json(['message' => 'Invalid state'], 400);
+            if (! in_array($state, $states)) {
+                return response()->json(['message' => 'Invalid state'], 400);
+            }
 
             $courses = Course::where('category_id', $categoryName->id)->where('state', $state)->paginate($limit);
         } else {
             // Get all courses if category and state are nulls
-            if (!$category && !$state) $courses = Course::paginate($limit);
-            else if (!$category) {
+            if (! $category && ! $state) {
+                $courses = Course::paginate($limit);
+            } elseif (! $category) {
                 // Get all courses with the given state
                 $states = CourseState::values();
 
-                if (!in_array($state, $states)) return response()->json(['message' => 'Invalid state'], 400);
+                if (! in_array($state, $states)) {
+                    return response()->json(['message' => 'Invalid state'], 400);
+                }
 
                 $courses = Course::where('state', $state)->paginate($limit);
-            } else if (!$state) {
+            } elseif (! $state) {
                 // Get all courses with the given category
                 $categoryName = Category::where('course_area_name', $category)->get()->first();
 
-                if (!$categoryName) return response()->json(['message' => 'Invalid category'], 400);
+                if (! $categoryName) {
+                    return response()->json(['message' => 'Invalid category'], 400);
+                }
 
                 $courses = Course::where('category_id', $categoryName->id)->paginate($limit);
             }
 
         }
+
         return BaseCourseResource::collection($courses);
     }
 
-    public function api_show(int $id) {
+    public function api_show(int $id)
     {
+
         $course = Course::find($id);
 
-        if (!$course) {
+        if (! $course) {
             return response()->json(['message' => 'Course not found'], 404);
         }
 
         return AllInfoCourseResource::make($course);
-    }
+
     }
 
-    public function api_create(CreateCourseRequest $request) {
+    public function api_create(CreateCourseRequest $request)
+    {
         // Check if the user can create a course
         if ($request->user()->cannot('create', Course::class)) {
             abort(404);
@@ -132,14 +144,11 @@ class CourseController extends Controller
         // Check if the teacher id is a real teacher
         $teacher = User::find($request->teacher_id)->where('role', UserRole::TEACHER)->first();
 
-        if (!$teacher) return;
-
-
-    }
-
-    public function api_delete(Course $course) {
+        if (! $teacher) {
+            return;
+        }
 
     }
 
-
+    public function api_delete(Course $course) {}
 }

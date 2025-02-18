@@ -12,7 +12,7 @@ Route::get('/prueba', function () {
     return 'hola';
 })->middleware([
     'auth',
-    'role:'. UserRole::STUDENT->value
+    'role:'.UserRole::STUDENT->value,
 ]);
 Route::get('/', [UserController::class, 'index'])->middleware(['auth']);
 

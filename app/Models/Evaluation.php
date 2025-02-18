@@ -15,7 +15,7 @@ class Evaluation extends Pivot
         'course_id',
         'student_id',
         'final_note',
-        'comments'
+        'comments',
     ];
 
     public function student(): BelongsTo

@@ -14,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -59,6 +59,7 @@ class User extends Authenticatable
 
     /**
      * Get all the courses of the user if the user is a student
+     *
      * @return BelongsToMany<Course>|null
      */
     public function confirmedCourses(): ?BelongsToMany

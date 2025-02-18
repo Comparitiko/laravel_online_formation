@@ -27,7 +27,6 @@ class Registration extends Pivot
 
     /**
      * Get the course that owns the registration.
-     * @return BelongsTo
      */
     public function course(): BelongsTo
     {
@@ -36,7 +35,6 @@ class Registration extends Pivot
 
     /**
      * Get the student that owns the registration.
-     * @return BelongsTo
      */
     public function student(): BelongsTo
     {

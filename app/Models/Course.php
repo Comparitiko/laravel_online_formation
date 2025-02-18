@@ -23,6 +23,7 @@ class Course extends Model
 
     /**
      * Get the category of the course
+     *
      * @return BelongsTo<Category>
      */
     public function category(): BelongsTo
@@ -32,6 +33,7 @@ class Course extends Model
 
     /**
      * Get the teacher of the course
+     *
      * @return BelongsTo<User>
      */
     public function teacher(): BelongsTo
@@ -41,6 +43,7 @@ class Course extends Model
 
     /**
      * Get all the course materials
+     *
      * @return HasMany<CourseMaterial>
      */
     public function materials(): HasMany
@@ -50,6 +53,7 @@ class Course extends Model
 
     /**
      * Get all the students of the course
+     *
      * @return BelongsToMany<User>
      */
     public function registeredStudents(): BelongsToMany
@@ -59,6 +63,7 @@ class Course extends Model
 
     /**
      * Get all the registrations of the course
+     *
      * @return HasMany<Registration>
      */
     public function studentRegistrations(): HasMany
@@ -68,6 +73,7 @@ class Course extends Model
 
     /**
      * Get all the evaluations of the course
+     *
      * @return HasMany<Evaluation>
      */
     public function studentEvaluations(): HasMany

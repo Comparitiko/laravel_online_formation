@@ -1,38 +1,37 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
 
-  Route::middleware('auth:sanctum')->group(function () {
-      // Courses routes
-      Route::prefix('/courses')->group(function () {
-          // Anyone can see this routes
-          Route::get('/', [CourseController::class, 'api_index']);
-          Route::get('/{id}', [CourseController::class, 'api_show']);
+    Route::middleware('auth:sanctum')->group(function () {
+        // Courses routes
+        Route::prefix('/courses')->group(function () {
+            // Anyone can see this routes
+            Route::get('/', [CourseController::class, 'api_index']);
+            Route::get('/{id}', [CourseController::class, 'api_show']);
 
-          // Only admins can create and delete courses
-          Route::post('/', [CourseController::class, 'api_create']);
-          Route::delete('/{id}', [CourseController::class, 'api_delete']);
-      });
+            // Only admins can create and delete courses
+            Route::post('/', [CourseController::class, 'api_create']);
+            Route::delete('/{id}', [CourseController::class, 'api_delete']);
+        });
 
-      // Students routes
-      Route::prefix('/students')->group(function () {
-          // Only admins and the student that owns the registration can see this routes
-          Route::get('/{dni}/registrations', [UserController::class, 'api_show_all_registrations']);
-          Route::delete('/{dni}/registrations/{course_id}', [UserController::class, 'api_delete_registration']);
-      });
+        // Students routes
+        Route::prefix('/students')->group(function () {
+            // Only admins and the student that owns the registration can see this routes
+            Route::get('/{dni}/registrations', [UserController::class, 'api_show_all_registrations']);
+            Route::delete('/{dni}/registrations/{course_id}', [UserController::class, 'api_delete_registration']);
+        });
 
-      // Registrations routes
-      Route::prefix('/registrations')->group(function () {
-          // User that owns the registration can create and delete registrations
-          Route::post('/', [UserController::class, 'api_new_registration']);
-      });
-  });
+        // Registrations routes
+        Route::prefix('/registrations')->group(function () {
+            // User that owns the registration can create and delete registrations
+            Route::post('/', [UserController::class, 'api_new_registration']);
+        });
+    });
 
-  Route::post('/login', [UserController::class, 'api_login']);
-  Route::post('/register', [UserController::class, 'api_register']);
+    Route::post('/login', [UserController::class, 'api_login']);
+    Route::post('/register', [UserController::class, 'api_register']);
 });

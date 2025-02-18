@@ -4,16 +4,13 @@ namespace App\Policies;
 
 use App\Enums\UserRole;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
     /**
      * Check if user can do all the actions
-     * @param User $user
-     * @return bool|null
      */
-    public function before(User $user): bool|null
+    public function before(User $user): ?bool
     {
         if ($user->role === UserRole::ADMIN) {
             return true;

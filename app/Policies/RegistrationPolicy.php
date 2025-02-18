@@ -9,10 +9,8 @@ class RegistrationPolicy
 {
     /**
      * Check if user can do all the actions
-     * @param User $user
-     * @return bool|null
      */
-    public function before(User $user): bool|null
+    public function before(User $user): ?bool
     {
         if ($user->role === UserRole::ADMIN) {
             return true;
@@ -23,11 +21,6 @@ class RegistrationPolicy
 
     /**
      * Can view any registration
-     * @param User $user
-     * @return bool
      */
-    public function viewRegistration(User $user): bool
-    {
-
-    }
+    public function viewRegistration(User $user): bool {}
 }
