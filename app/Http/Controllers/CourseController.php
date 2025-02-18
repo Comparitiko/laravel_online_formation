@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CourseState;
+use App\Enums\UserRole;
+use App\Http\Requests\Courses\CreateCourseRequest;
 use App\Http\Resources\Course\AllInfoCourseResource;
 use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -120,7 +123,17 @@ class CourseController extends Controller
     }
     }
 
-    public function api_create(Request $request) {
+    public function api_create(CreateCourseRequest $request) {
+        // Check if the user can create a course
+        if ($request->user()->cannot('create', Course::class)) {
+            abort(404);
+        }
+
+        // Check if the teacher id is a real teacher
+        $teacher = User::find($request->teacher_id)->where('role', UserRole::TEACHER)->first();
+
+        if (!$teacher) return;
+
 
     }
 

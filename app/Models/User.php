@@ -77,32 +77,10 @@ class User extends Authenticatable
         return null;
     }
 
-    /**
-     * Get the courses evaluations of the user if the user is a student
-     * @return BelongsToMany|null
-     */
-    public function coursesEvaluations(): ?BelongsToMany
-    {
-        if ($this->role === UserRole::STUDENT) {
-            return $this->belongsToMany(Course::class, 'evaluations', 'student_id', 'course_id')->using(Evaluation::class);
-        }
-
-        return null;
-    }
-
-    public function isStudentOf(Course $course): bool
-    {
-        return $this->studentCourses->contains($course);
-    }
-
-    public function isSameUser(User $user): bool
-    {
-        return $this->id === $user->id;
-    }
-
     public function studentCourses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'registrations', 'student_id', 'course_id')->using
-            (Registration::class)->using(Registration::class);
+        return $this->belongsToMany(Course::class, 'registrations', 'student_id', 'course_id')
+            ->using(Registration::class)
+            ->withPivot('state');
     }
 }
