@@ -19,6 +19,7 @@ class Registration extends Pivot
     protected $fillable = [
         'course_id',
         'student_id',
+        'state',
     ];
 
     protected function casts(): array
@@ -46,7 +47,6 @@ class Registration extends Pivot
 
     /**
      * Check if the registration exists
-     * @return bool
      */
     public function exists(): bool
     {
@@ -57,7 +57,6 @@ class Registration extends Pivot
 
     /**
      * Check if the course is active or not
-     * @return bool
      */
     public function isCourseActive(): bool
     {

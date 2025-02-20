@@ -80,4 +80,9 @@ class Course extends Model
     {
         return $this->hasMany(Evaluation::class);
     }
+
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(Registration::class);
+    }
 }

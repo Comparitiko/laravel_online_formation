@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// Routes prefixed by /v1
 Route::prefix('/v1')->group(function () {
 
+    // Private routes
     Route::middleware('auth:sanctum')->group(function () {
         // Courses routes
         Route::prefix('/courses')->group(function () {
@@ -22,16 +25,17 @@ Route::prefix('/v1')->group(function () {
         Route::prefix('/students')->group(function () {
             // Only admins and the student that owns the registration can see this routes
             Route::get('/{dni}/registrations', [UserController::class, 'api_show_all_registrations']);
-            Route::delete('/{dni}/registrations/{course_id}', [UserController::class, 'api_delete_registration']);
+            Route::delete('/{dni}/registrations/{course_id}', [UserController::class, 'api_cancel_registration']);
         });
 
         // Registrations routes
         Route::prefix('/registrations')->group(function () {
             // User that owns the registration can create and delete registrations
-            Route::post('/', [UserController::class, 'api_new_registration']);
+            Route::post('/', [RegistrationController::class, 'api_new_registration']);
         });
     });
 
+    // Public routes
     Route::post('/login', [UserController::class, 'api_login']);
     Route::post('/register', [UserController::class, 'api_register']);
 });

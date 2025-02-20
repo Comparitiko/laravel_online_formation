@@ -15,11 +15,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('registrations', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(Course::class)->constrained();
             $table->foreignIdFor(User::class, 'student_id')->constrained();
             $table->enum('state', RegistrationState::values())->default(RegistrationState::PENDING->value);
             $table->timestamps();
-            $table->primary(['course_id', 'student_id']);
+            $table->unique(['course_id', 'student_id']);
         });
     }
 

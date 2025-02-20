@@ -74,7 +74,9 @@ class User extends Authenticatable
     public function confirmedCourses(): ?BelongsToMany
     {
         // Only students can have registrations
-        if ($this->role !== UserRole::STUDENT) return null;
+        if ($this->role !== UserRole::STUDENT) {
+            return null;
+        }
 
         return $this->belongsToMany(
             Course::class,
@@ -87,22 +89,25 @@ class User extends Authenticatable
 
     /**
      * Get all the courses of the teacher
-     * @return HasMany|null
      */
     public function teacherCourses(): ?HasMany
     {
-        if ($this->role !== UserRole::TEACHER) return null;
+        if ($this->role !== UserRole::TEACHER) {
+            return null;
+        }
 
         return $this->hasMany(Course::class, 'id', 'teacher_id');
     }
 
     /**
      * Get all the courses of the student
-     * @return BelongsToMany|null
      */
     public function studentCourses(): ?BelongsToMany
     {
-        if ($this->role !== UserRole::STUDENT) return null;
+        if ($this->role !== UserRole::STUDENT) {
+            return null;
+        }
+
         return $this->belongsToMany(Course::class, 'registrations', 'student_id', 'course_id')
             ->using(Registration::class)
             ->withPivot('state');
@@ -110,8 +115,6 @@ class User extends Authenticatable
 
     /**
      * Check if the user is a teacher of the course
-     * @param Course $course
-     * @return bool
      */
     public function isTeacherOf(Course $course): bool
     {

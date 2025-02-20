@@ -14,12 +14,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('evaluations', function (Blueprint $table) {
+            $table->id();
             $table->ForeignIdFor(Course::class)->constrained();
             $table->ForeignIdFor(User::class, 'student_id')->constrained();
             $table->double('final_note');
             $table->string('comments');
             $table->timestamps();
-            $table->primary(['course_id', 'student_id']);
+            $table->unique(['course_id', 'student_id']);
         });
 
     }

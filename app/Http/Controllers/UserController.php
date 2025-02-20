@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\CourseState;
 use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\Auth\LoginRequest;
@@ -93,7 +92,7 @@ class UserController extends Controller
         $student = User::where('dni', $dni)->where('role', UserRole::STUDENT)->get()->first();
 
         // Check if the user exists
-        if (!$student) {
+        if (! $student) {
             return response()->json(['message' => 'Student not found'], 404);
         }
 
@@ -111,53 +110,11 @@ class UserController extends Controller
     }
 
     /**
-     * Create a new registration for a specific student to a specific course
+     * Cancel a course registration for a specific student
      *
      * @return JsonResponse
      */
-    public function api_new_registration(RegistrationRequest $request)
-    {
-        // Retrieve the user by id and student role
-        $user = User::find($request->student_id)->where('role', UserRole::STUDENT)->first();
-
-        // Check if the user exists
-        if (!$user) {
-            return response()->json(['message' => 'Student not found'], 404);
-        }
-
-        // Create a new registration
-        $registration = new Registration();
-        $registration->fill($request->all());
-
-        // Check if the user can create a registration
-        if ($request->user()->cannot('createRegistration', $registration)) {
-            return response()->json(['message' => 'You are not allowed to create a registration'], 403);
-        }
-
-        // Check if the registration already exists
-        if ($registration->exists()) {
-            return response()->json(['message' => 'Registration already exists'], 400);
-        }
-
-        // Check if the course is active
-        if (!$registration->isCourseActive()) {
-            return response()->json(['message' => 'The course is not active'], 400);
-        }
-
-        // Save the registration
-        $registration->save();
-
-        return response()->json(['message' => 'Registration created successfully'], 201);
-    }
-
-    /**
-     * Cancel a course registration for a specific student
-     * @param Request $request
-     * @param string $dni
-     * @param int $course_id
-     * @return JsonResponse
-     */
-    public function api_delete_registration(Request $request, string $dni, int $course_id)
+    public function api_cancel_registration(Request $request, string $dni, int $course_id)
     {
         // Retrieve the user by id and student role
         $student = User::where('dni', $dni)->where('role', UserRole::STUDENT)->first();
@@ -169,7 +126,8 @@ class UserController extends Controller
 
         $registration = Registration::where('course_id', $course_id)->where('student_id', $student->id)->first();
 
-        if (!$registration) {
+        // Check if the registration exists
+        if (! $registration) {
             return response()->json(['message' => 'Registration not found'], 404);
         }
 
@@ -178,18 +136,14 @@ class UserController extends Controller
             return response()->json(['message' => 'You are not allowed to cancel the registration'], 403);
         }
 
-        // Voy por aqui jejeje
-        // Retrieve the course by id
-        $course = Course::find($course_id);
-
-        // Check if student is registered to the course
-        if (! $student->isStudentOf($course)) {
-            return response()->json(['message' => 'Student is not registered to this course'], 400);
+        // Check if the registration is already cancelled
+        if ($registration->state === RegistrationState::CANCELLED) {
+            return response()->json(['message' => 'Registration is already cancelled'], 400);
         }
 
-        // Cancel the registration
-        $student->studentCourses()->updateExistingPivot($course_id, ['state' => RegistrationState::CANCELLED]);
-        $student->save();
+        // Update the registration state to cancelled
+        $registration->state = RegistrationState::CANCELLED;
+        $registration->save();
 
         return response()->json(['message' => 'Registration deleted successfully']);
     }
