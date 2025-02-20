@@ -6,7 +6,6 @@ use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Requests\User\RegistrationRequest;
 use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Course;
 use App\Models\Registration;

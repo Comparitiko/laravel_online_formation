@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\User\RegistrationRequest;
 use App\Models\Registration;

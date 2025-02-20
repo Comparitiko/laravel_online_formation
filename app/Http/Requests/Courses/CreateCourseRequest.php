@@ -22,11 +22,11 @@ class CreateCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'duration' => 'required|integer|min:1',
-            'category_id' => 'required|integer|exists:categories,id',
-            'teacher_id' => 'required|integer|exists:users,id',
+            'name' => ['required', 'string', 'max:255', 'unique:courses,name'],
+            'description' => ['required', 'string', 'max:255'],
+            'duration' => ['required', 'integer', 'min:1'],
+            'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'teacher_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
 
@@ -35,6 +35,7 @@ class CreateCourseRequest extends FormRequest
         return [
             'name.required' => 'Name is required',
             'name.max' => 'Name must be 255 characters or less',
+            'name.unique' => 'Course name already exists',
             'description.required' => 'Description is required',
             'description.max' => 'Description must be 255 characters or less',
             'duration.required' => 'Duration is required',

@@ -19,7 +19,6 @@ class Registration extends Pivot
     protected $fillable = [
         'course_id',
         'student_id',
-        'state',
     ];
 
     protected function casts(): array

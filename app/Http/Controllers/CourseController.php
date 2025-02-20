@@ -137,17 +137,23 @@ class CourseController extends Controller
     public function api_create(CreateCourseRequest $request)
     {
         // Check if the user can create a course
-        if ($request->user()->cannot('create', Course::class)) {
-            abort(404);
+        if ($request->user()->cannot('createCourse', Course::class)) {
+            response()->json(['message' => 'You are not allowed to create a course'], 403);
         }
 
         // Check if the teacher id is a real teacher
         $teacher = User::find($request->teacher_id)->where('role', UserRole::TEACHER)->first();
 
-        if (! $teacher) {
-            return;
+        if (!$teacher) {
+            return response()->json(['message' => 'The teacher_id is not a valid id']);
         }
 
+        // Create the new course
+        $course = new Course();
+        $course->fill($request->all());
+        $course->save();
+
+        return response()->json(['message' => 'Course created successfully']);
     }
 
     public function api_delete(Course $course) {}
