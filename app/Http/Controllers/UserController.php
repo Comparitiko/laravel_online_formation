@@ -150,6 +150,13 @@ class UserController extends Controller
         return response()->json(['message' => 'Registration created successfully'], 201);
     }
 
+    /**
+     * Cancel a course registration for a specific student
+     * @param Request $request
+     * @param string $dni
+     * @param int $course_id
+     * @return JsonResponse
+     */
     public function api_delete_registration(Request $request, string $dni, int $course_id)
     {
         // Retrieve the user by id and student role
@@ -160,11 +167,18 @@ class UserController extends Controller
             return response()->json(['message' => 'Student not found'], 404);
         }
 
+        $registration = Registration::where('course_id', $course_id)->where('student_id', $student->id)->first();
+
+        if (!$registration) {
+            return response()->json(['message' => 'Registration not found'], 404);
+        }
+
         // Check if the user can delete the registration
-        if ($request->user()->id !== $student->id && $request->user()->role !== UserRole::ADMIN) {
+        if ($request->user()->cannot('cancelRegistration', $registration)) {
             return response()->json(['message' => 'You are not allowed to cancel the registration'], 403);
         }
 
+        // Voy por aqui jejeje
         // Retrieve the course by id
         $course = Course::find($course_id);
 

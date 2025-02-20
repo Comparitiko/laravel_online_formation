@@ -7,6 +7,7 @@ use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -73,23 +74,47 @@ class User extends Authenticatable
     public function confirmedCourses(): ?BelongsToMany
     {
         // Only students can have registrations
-        if ($this->role === UserRole::STUDENT) {
-            return $this->belongsToMany(
-                Course::class,
-                'registrations',
-                'student_id',
-                'course_id'
-            )
-                ->wherePivot('state', RegistrationState::CONFIRMED)->using(Registration::class);
-        }
+        if ($this->role !== UserRole::STUDENT) return null;
 
-        return null;
+        return $this->belongsToMany(
+            Course::class,
+            'registrations',
+            'student_id',
+            'course_id'
+        )
+            ->wherePivot('state', RegistrationState::CONFIRMED)->using(Registration::class);
     }
 
-    public function studentCourses(): BelongsToMany
+    /**
+     * Get all the courses of the teacher
+     * @return HasMany|null
+     */
+    public function teacherCourses(): ?HasMany
     {
+        if ($this->role !== UserRole::TEACHER) return null;
+
+        return $this->hasMany(Course::class, 'id', 'teacher_id');
+    }
+
+    /**
+     * Get all the courses of the student
+     * @return BelongsToMany|null
+     */
+    public function studentCourses(): ?BelongsToMany
+    {
+        if ($this->role !== UserRole::STUDENT) return null;
         return $this->belongsToMany(Course::class, 'registrations', 'student_id', 'course_id')
             ->using(Registration::class)
             ->withPivot('state');
+    }
+
+    /**
+     * Check if the user is a teacher of the course
+     * @param Course $course
+     * @return bool
+     */
+    public function isTeacherOf(Course $course): bool
+    {
+        return $course->teacher_id === $this->id;
     }
 }

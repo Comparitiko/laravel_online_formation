@@ -22,4 +22,15 @@ class RegistrationPolicy
    {
        return $user->id === $registration->student_id;
    }
+
+   public function cancelRegistration(User $user, Registration $registration): bool
+   {
+       // Check if the user is the student that owns the registration
+       if ($user->id === $registration->student_id) return true;
+
+       // Check if the user is the teacher of the course
+       if ($user->isTeacherOf($registration->course)) return true;
+
+       return false;
+   }
 }
