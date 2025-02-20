@@ -121,24 +121,16 @@ class CourseController extends Controller
         return BaseCourseResource::collection($courses);
     }
 
-    public function api_show(int $id)
+    public function api_show(Course $course)
     {
-
-        $course = Course::find($id);
-
-        if (! $course) {
-            return response()->json(['message' => 'Course not found'], 404);
-        }
-
         return AllInfoCourseResource::make($course);
-
     }
 
     public function api_create(CreateCourseRequest $request)
     {
         // Check if the user can create a course
         if ($request->user()->cannot('createCourse', Course::class)) {
-            response()->json(['message' => 'You are not allowed to create a course'], 403);
+            return response()->json(['message' => 'You are not allowed to create a course'], 403);
         }
 
         // Check if the teacher id is a real teacher
@@ -156,5 +148,15 @@ class CourseController extends Controller
         return response()->json(['message' => 'Course created successfully']);
     }
 
-    public function api_delete(Course $course) {}
+    public function api_delete(Request $request, Course $course) {
+        if ($request->user()->cannot('deleteCourse', Course::class)) {
+            return response()->json(['message' => 'You are not authorized to delete this course'], 403);
+        }
+
+        if ($course->delete()) {
+            return response()->json(['message' => 'Course deleted successfully']);
+        }
+
+        return response()->json(['message' => 'Error deleting course'], 400);
+    }
 }

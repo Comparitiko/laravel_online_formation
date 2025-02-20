@@ -14,11 +14,11 @@ Route::prefix('/v1')->group(function () {
         Route::prefix('/courses')->group(function () {
             // Anyone can see this routes
             Route::get('/', [CourseController::class, 'api_index']);
-            Route::get('/{id}', [CourseController::class, 'api_show']);
+            Route::get('/{course}', [CourseController::class, 'api_show']);
 
             // Only admins can create and delete courses
             Route::post('/', [CourseController::class, 'api_create']);
-            Route::delete('/{id}', [CourseController::class, 'api_delete']);
+            Route::delete('/{course}', [CourseController::class, 'api_delete']);
         });
 
         // Students routes

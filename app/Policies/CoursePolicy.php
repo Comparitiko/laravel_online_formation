@@ -24,4 +24,9 @@ class CoursePolicy
     {
         return false;
     }
+
+    public function deleteCourse(): bool
+    {
+        return false;
+    }
 }

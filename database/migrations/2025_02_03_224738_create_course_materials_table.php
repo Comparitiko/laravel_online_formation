@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->enum('type', MaterialType::values());
             $table->string('url');
-            $table->foreignIdFor(Course::class)->constrained();
+            $table->foreignIdFor(Course::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

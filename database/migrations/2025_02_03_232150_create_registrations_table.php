@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Course::class)->constrained();
-            $table->foreignIdFor(User::class, 'student_id')->constrained();
+            $table->foreignIdFor(Course::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'student_id')->constrained()->cascadeOnDelete();
             $table->enum('state', RegistrationState::values())->default(RegistrationState::PENDING->value);
             $table->timestamps();
             $table->unique(['course_id', 'student_id']);

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->id();
-            $table->ForeignIdFor(Course::class)->constrained();
-            $table->ForeignIdFor(User::class, 'student_id')->constrained();
+            $table->ForeignIdFor(Course::class)->constrained()->cascadeOnDelete();
+            $table->ForeignIdFor(User::class, 'student_id')->constrained()->cascadeOnDelete();
             $table->double('final_note');
             $table->string('comments');
             $table->timestamps();
