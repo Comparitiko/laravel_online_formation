@@ -11,6 +11,8 @@ class Evaluation extends Pivot
     /** @use HasFactory<\Database\Factories\EvaluationFactory> */
     use HasFactory;
 
+    protected $table = 'evaluations';
+
     protected $fillable = [
         'course_id',
         'student_id',
