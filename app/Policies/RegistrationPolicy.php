@@ -3,24 +3,23 @@
 namespace App\Policies;
 
 use App\Enums\UserRole;
+use App\Models\Registration;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class RegistrationPolicy
 {
-    /**
-     * Check if user can do all the actions
-     */
-    public function before(User $user): ?bool
-    {
-        if ($user->role === UserRole::ADMIN) {
-            return true;
-        }
+   public function before(User $user): ?bool
+   {
+       if ($user->role === UserRole::ADMIN) {
+           return true;
+       }
 
-        return null;
-    }
+       return null;
+   }
 
-    /**
-     * Can view any registration
-     */
-    public function viewRegistration(User $user): bool {}
+   public function createRegistration(User $user, Registration $registration): bool
+   {
+       return $user->id === $registration->student_id;
+   }
 }

@@ -23,7 +23,7 @@ class RegistrationRequest extends FormRequest
     {
         return [
             'course_id' => ['required', 'exists:courses,id'],
-            'user_id' => ['required', 'exists:users,id'],
+            'student_id' => ['required', 'exists:users,id'],
         ];
     }
 
@@ -33,9 +33,8 @@ class RegistrationRequest extends FormRequest
             'course_id.required' => 'The course is required.',
             'course_id.state' => 'The course is not active.',
             'course_id.exists' => 'The course does not exist.',
-            'user_id.required' => 'The user is required.',
-            'user_id.exists' => 'The user does not exist.',
-            'user_id.role' => 'This user not exist.', // Exist but not student just for security
+            'student_id.required' => 'The student id is required.',
+            'student_id.exists' => 'The student does not exist.',
         ];
     }
 }

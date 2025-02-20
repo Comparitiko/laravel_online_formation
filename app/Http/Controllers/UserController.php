@@ -93,7 +93,7 @@ class UserController extends Controller
         $student = User::where('dni', $dni)->where('role', UserRole::STUDENT)->get()->first();
 
         // Check if the user exists
-        if (! $student) {
+        if (!$student) {
             return response()->json(['message' => 'Student not found'], 404);
         }
 
@@ -102,8 +102,8 @@ class UserController extends Controller
 
         $confirmedCourses = $student->confirmedCourses()->paginate($limit);
 
-        // Check if the user can view the registrations of the student
-        if ($request->user()->cannot('view', $student)) {
+        // Check if the user can view the information of the student
+        if ($request->user()->cannot('viewUser', $student)) {
             abort(404);
         }
 
@@ -118,34 +118,34 @@ class UserController extends Controller
     public function api_new_registration(RegistrationRequest $request)
     {
         // Retrieve the user by id and student role
-        $user = User::find($request->user_id)->where('role', UserRole::STUDENT)->first();
+        $user = User::find($request->student_id)->where('role', UserRole::STUDENT)->first();
 
         // Check if the user exists
-        if (! $user) {
+        if (!$user) {
             return response()->json(['message' => 'Student not found'], 404);
         }
 
+        // Create a new registration
+        $registration = new Registration();
+        $registration->fill($request->all());
+
         // Check if the user can create a registration
-        if ($request->user()->id !== $request->user_id && $request->user()->role !== UserRole::ADMIN) {
+        if ($request->user()->cannot('createRegistration', $registration)) {
             return response()->json(['message' => 'You are not allowed to create a registration'], 403);
         }
 
-        // Retrieve the course by id
-        $course = Course::find($request->course_id);
+        // Check if the registration already exists
+        if ($registration->exists()) {
+            return response()->json(['message' => 'Registration already exists'], 400);
+        }
 
         // Check if the course is active
-        if ($course->state !== CourseState::ACTIVE) {
+        if (!$registration->isCourseActive()) {
             return response()->json(['message' => 'The course is not active'], 400);
         }
 
-        // Check if the user already registered to the course
-        if ($user->isStudentOf($course)) {
-            return response()->json(['message' => 'User already registered to this course'], 400);
-        }
-
-        // Create the registration
-        $user->studentCourses()->attach($request->course_id);
-        $user->save();
+        // Save the registration
+        $registration->save();
 
         return response()->json(['message' => 'Registration created successfully'], 201);
     }

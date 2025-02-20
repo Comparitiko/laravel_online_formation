@@ -58,6 +58,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is the same user as the model parameter
+     */
+    public function isSameUser(User $model): bool
+    {
+        return $this->id === $model->id;
+    }
+
+    /**
      * Get all the courses of the user if the user is a student
      *
      * @return BelongsToMany<Course>|null

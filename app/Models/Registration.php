@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CourseState;
 use App\Enums\RegistrationState;
 use Database\Factories\RegistrationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,8 @@ class Registration extends Pivot
 {
     /** @use HasFactory<RegistrationFactory> */
     use HasFactory;
+
+    protected $table = 'registrations';
 
     protected $fillable = [
         'course_id',
@@ -39,5 +42,25 @@ class Registration extends Pivot
     public function student(): BelongsTo
     {
         return $this->belongsTo(User::class, 'student_id');
+    }
+
+    /**
+     * Check if the registration exists
+     * @return bool
+     */
+    public function exists(): bool
+    {
+        $registration = Registration::where('course_id', $this->course_id)->where('student_id', $this->student_id)->first();
+
+        return $registration !== null;
+    }
+
+    /**
+     * Check if the course is active or not
+     * @return bool
+     */
+    public function isCourseActive(): bool
+    {
+        return $this->course->state === CourseState::ACTIVE;
     }
 }
