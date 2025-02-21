@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/auth.php';
 
 // Index route
-Route::get('/', function () {
-    Mail::to('gabigcy@gmail.com')->send(new RegisterMail());
-});
+Route::get('/', [UserController::class, 'index'])->middleware(['auth']);
 
 Route::get('/prueba', function () {
     return 'hola';
@@ -20,7 +18,6 @@ Route::get('/prueba', function () {
     'auth',
     'role:'.UserRole::STUDENT->value,
 ]);
-//Route::get('/', [UserController::class, 'index'])->middleware(['auth']);
 
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
@@ -31,3 +28,5 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::prefix('/private')->middleware(['auth', 'verified', 'role:'])->group(function () {});

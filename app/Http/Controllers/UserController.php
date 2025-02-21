@@ -11,14 +11,19 @@ use App\Models\Course;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request): RedirectResponse|View
     {
+        $role = $request->user()->role;
+        if ($role === UserRole::TEACHER) return redirect()->route('teacher.dashboard');
+        if ($role === UserRole::ADMIN) return redirect()->route('student.dashboard');
         return view('pages.dashboard');
     }
 
