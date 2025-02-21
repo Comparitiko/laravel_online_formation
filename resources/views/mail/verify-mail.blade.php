@@ -23,12 +23,16 @@
             font-size: 12px;
             color: #888;
         }
+        .text-center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-<h1>¡Hola, {{ $user->name }}!</h1>
+<h1 class="text-center">¡Hola, {{ $user->name }}!</h1>
 <p>Gracias por registrarte en {{ config('app.name') }}.</p>
 <p>Para completar tu registro, haz clic en el siguiente botón para verificar tu correo:</p>
+
 <a href="{{ $verificationUrl }}" class="button">Verificar Correo</a>
 
 <p class="footer">

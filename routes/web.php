@@ -3,8 +3,6 @@
 use App\Enums\UserRole;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use App\Mail\RegisterMail;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -20,7 +18,7 @@ Route::get('/prueba', function () {
 ]);
 
 Route::get('/dashboard', function () {
-    return view('pages.dashboard');
+    return view('pages.private.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -22,8 +22,8 @@ class UserController extends Controller
     public function index(Request $request): RedirectResponse|View
     {
         $role = $request->user()->role;
-        if ($role === UserRole::TEACHER) return redirect()->route('teacher.dashboard');
-        if ($role === UserRole::ADMIN) return redirect()->route('student.dashboard');
+        if ($role === UserRole::TEACHER) return redirect()->route('.dashboard');
+        if ($role === UserRole::ADMIN) return redirect()->route('students');
         return view('pages.dashboard');
     }
 
