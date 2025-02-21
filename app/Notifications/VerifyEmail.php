@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -39,26 +38,14 @@ class VerifyEmail extends Notification
         return (new MailMessage)
             ->subject('Verifica tu cuenta en ' . config('app.name'))
             ->view('mail.verify-mail', [
-                'user' => $notifiable,          // El usuario al que se le envía el correo
-                'verificationUrl' => $verificationUrl  // La URL de verificación
+                'user' => $notifiable,
+                'verificationUrl' => $verificationUrl
             ]);
 
     }
 
     /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
-    }
-
-    /**
-     * Genera la URL de verificación.
+     * Generate the URL to the verification link.
      */
     protected function verificationUrl($notifiable)
     {
