@@ -4,9 +4,10 @@
             <!-- Formulario de Registro -->
             <div class="p-8">
                 <h2 class="text-3xl font-bold text-white mb-6">Registrarse</h2>
-                <form>
+                <form action="{{route('register') }}" method="POST">
                     @csrf
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <x-errors />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div class="mb-6 relative">
                             <x-text-input
                                 type="text"
@@ -29,28 +30,84 @@
                             <x-input-error :messages="$errors->get('surnames')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="text" placeholder="Nombre de usuario" required />
+                            <x-text-input
+                                type="text"
+                                name="username"
+                                value="{{ old('username') }}"
+                                placeholder="Nombre de usuario"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('username')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="text" placeholder="DNI" required />
+                            <x-text-input
+                                type="text"
+                                name="dni"
+                                value="{{ old('dni') }}"
+                                placeholder="DNI"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('dni')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="text" placeholder="Dirección" required />
+                            <x-text-input
+                                type="text"
+                                name="address"
+                                value="{{ old('address') }}"
+                                placeholder="Dirección"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('address')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="tel" placeholder="Número de teléfono" required />
+                            <x-text-input
+                                type="tel"
+                                name="phone_number"
+                                value="{{old('phone_number')}}"
+                                placeholder="Número de teléfono"
+                                maxlength="9"
+                                minlength="9"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('phone_number')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="text" placeholder="Ciudad" required />
+                            <x-text-input
+                                type="text"
+                                name="city"
+                                value="{{ old('city') }}"
+                                placeholder="Ciudad"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('city')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="email" placeholder="Email" required />
+                            <x-text-input
+                                type="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                placeholder="Email"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="password" placeholder="Contraseña" required />
+                            <x-text-input
+                                type="password"
+                                name="password"
+                                placeholder="Contraseña"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
                         <div class="mb-6 relative">
-                            <x-text-input type="password" placeholder="Confirmar contraseña" required />
+                            <x-text-input
+                                type="password"
+                                name="confirm_password"
+                                placeholder="Confirmar contraseña"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('confirm_password')" class="mt-2" />
                         </div>
                     </div>
                     <div class="my-4">
@@ -71,57 +128,3 @@
         </section>
     </main>
 </x-layouts.guest>
-
-
-{{--<x-layouts.guest>--}}
-{{--    <form method="POST" action="{{ route('register') }}">--}}
-{{--        @csrf--}}
-
-{{--        <!-- Name -->--}}
-{{--        <div>--}}
-{{--            <x-input-label for="name" :value="__('Name')" />--}}
-{{--            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />--}}
-{{--            <x-input-error :messages="$errors->get('name')" class="mt-2" />--}}
-{{--        </div>--}}
-
-{{--        <!-- Email Address -->--}}
-{{--        <div class="mt-4">--}}
-{{--            <x-input-label for="email" :value="__('Email')" />--}}
-{{--            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />--}}
-{{--            <x-input-error :messages="$errors->get('email')" class="mt-2" />--}}
-{{--        </div>--}}
-
-{{--        <!-- Password -->--}}
-{{--        <div class="mt-4">--}}
-{{--            <x-input-label for="password" :value="__('Password')" />--}}
-
-{{--            <x-text-input id="password" class="block mt-1 w-full"--}}
-{{--                            type="password"--}}
-{{--                            name="password"--}}
-{{--                            required autocomplete="new-password" />--}}
-
-{{--            <x-input-error :messages="$errors->get('password')" class="mt-2" />--}}
-{{--        </div>--}}
-
-{{--        <!-- Confirm Password -->--}}
-{{--        <div class="mt-4">--}}
-{{--            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />--}}
-
-{{--            <x-text-input id="password_confirmation" class="block mt-1 w-full"--}}
-{{--                            type="password"--}}
-{{--                            name="password_confirmation" required autocomplete="new-password" />--}}
-
-{{--            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />--}}
-{{--        </div>--}}
-
-{{--        <div class="flex items-center justify-end mt-4">--}}
-{{--            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">--}}
-{{--                {{ __('Already registered?') }}--}}
-{{--            </a>--}}
-
-{{--            <x-primary-button class="ms-4">--}}
-{{--                {{ __('Register') }}--}}
-{{--            </x-primary-button>--}}
-{{--        </div>--}}
-{{--    </form>--}}
-{{--</x-layouts.guest>--}}
