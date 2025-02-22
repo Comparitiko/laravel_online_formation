@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\URL;
 
 class VerifyEmail extends Notification
 {
@@ -39,7 +40,7 @@ class VerifyEmail extends Notification
             ->subject('Verifica tu cuenta en ' . config('app.name'))
             ->view('mail.verify-mail', [
                 'user' => $notifiable,
-                'verificationUrl' => $verificationUrl
+                'verificationUrl' => $verificationUrl,
             ]);
 
     }
@@ -49,9 +50,10 @@ class VerifyEmail extends Notification
      */
     protected function verificationUrl($notifiable)
     {
-        return url(route('verification.verify', [
-            'id' => $notifiable->getKey(),
-            'hash' => sha1($notifiable->getEmailForVerification()),
-        ], false));
+        return URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
+        );
     }
 }
