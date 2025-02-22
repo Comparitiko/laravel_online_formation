@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => CheckUserRole::class,
         ]);
+
+        $middleware->redirectTo(
+            guests: '/login',
+            users: '/'
+        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {

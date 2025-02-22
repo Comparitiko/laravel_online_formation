@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\UserRole;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -8,23 +8,18 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/auth.php';
 
 // Index route
-Route::get('/', [UserController::class, 'index'])->middleware(['auth']);
-
-Route::get('/prueba', function () {
-    return 'hola';
-})->middleware([
-    'auth',
-    'role:'.UserRole::STUDENT->value,
-]);
-
-Route::get('/dashboard', function () {
-    return view('pages.private.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/', [UserController::class, 'index']);
+
+    Route::prefix('/profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+
+    Route::prefix('/private')->group(function () {
+        Route::get('/dashboard', [UserController::class, 'private-index'])->name('dashboard');
+    })->name('private');
 });
 
-Route::prefix('/private')->middleware(['auth', 'verified', 'role:'])->group(function () {});
+Route::get('/about-us', [InfoController::class, 'about_us'])->name('about-us');

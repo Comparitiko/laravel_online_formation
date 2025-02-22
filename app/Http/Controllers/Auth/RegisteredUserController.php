@@ -36,12 +36,12 @@ class RegisteredUserController extends Controller
         $user->fill($request->all());
         $user->save();
 
-        // Send event to notify the user
-        event(new Registered($user));
+        // Send email verification
+        $user->sendEmailVerificationNotification();
 
         // Log in the user
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('verification.notice', absolute: false));
     }
 }

@@ -21,10 +21,15 @@ class UserController extends Controller
 {
     public function index(Request $request): RedirectResponse|View
     {
+        // Check if the user has verified email
+        if (!$request->user()->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice');
+        }
+
         $role = $request->user()->role;
-        if ($role === UserRole::TEACHER) return redirect()->route('.dashboard');
+        if ($role === UserRole::TEACHER) return redirect()->route('dashboard');
         if ($role === UserRole::ADMIN) return redirect()->route('students');
-        return view('pages.dashboard');
+        return view('pages.private.dashboard');
     }
 
     /**
