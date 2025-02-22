@@ -41,7 +41,7 @@
                     </div>
                     <div class="my-4">
                         <small class="text-white">
-                            No tienes una cuenta todavía:
+                            ¿No tienes una cuenta todavía?
                             <a
                                 class="font-bold hover:text-gray-300 hover:underline"
                                 href="{{ route('register') }}">

@@ -2,22 +2,70 @@
     <main class="bg-slate-800 min-h-screen flex items-center justify-center p-4">
         <section class="form-container bg-slate-700 rounded-xl shadow-lg overflow-hidden w-full max-w-md">
             <!-- Formulario de Registro -->
-            <div class="w-full md:w-1/2 p-8">
+            <div class="p-8">
                 <h2 class="text-3xl font-bold text-white mb-6">Registrarse</h2>
                 <form>
                     @csrf
-                    <div class="mb-6 relative">
-                        <input class="w-full pl-10 pr-3 py-2 rounded-lg bg-slate-500 text-white border-2 border-slate-400 outline-none focus:border-pink-400" type="text" placeholder="Nombre Completo" required>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="mb-6 relative">
+                            <x-text-input
+                                type="text"
+                                value="{{old('name')}}"
+                                name="name"
+                                placeholder="Nombre"
+                                autofocus
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input
+                                type="text"
+                                name="surnames"
+                                value="{{old('surnames')}}"
+                                placeholder="Apellidos"
+                                required
+                            />
+                            <x-input-error :messages="$errors->get('surnames')" class="mt-2" />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="text" placeholder="Nombre de usuario" required />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="text" placeholder="DNI" required />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="text" placeholder="Dirección" required />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="tel" placeholder="Número de teléfono" required />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="text" placeholder="Ciudad" required />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="email" placeholder="Email" required />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="password" placeholder="Contraseña" required />
+                        </div>
+                        <div class="mb-6 relative">
+                            <x-text-input type="password" placeholder="Confirmar contraseña" required />
+                        </div>
                     </div>
-                    <div class="mb-6 relative">
-                        <input class="w-full pl-10 pr-3 py-2 rounded-lg bg-slate-500 text-white border-2 border-slate-400 outline-none focus:border-pink-400" type="email" placeholder="Correo Electrónico" required>
+                    <div class="my-4">
+                        <small class="text-white">
+                            ¿Ya tienes una cuenta?
+                            <a
+                                class="font-bold hover:text-gray-300 hover:underline"
+                                href="{{ route('login') }}">
+                                Inicia sesión
+                            </a>
+                        </small>
                     </div>
-                    <div class="mb-6 relative">
-                        <input class="w-full pl-10 pr-3 py-2 rounded-lg bg-slate-500 text-white border-2 border-slate-400 outline-none focus:border-pink-400" type="password" placeholder="Contraseña" required>
+                    <div class="flex justify-end">
+                        <x-primary-button class="w-1/2" type="submit">Crear cuenta</x-primary-button>
                     </div>
-                    <button class="w-full bg-pink-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-pink-500 transition duration-300" type="submit">
-                        Crear Cuenta
-                    </button>
                 </form>
             </div>
         </section>

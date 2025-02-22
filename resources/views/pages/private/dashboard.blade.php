@@ -1,1 +1,3 @@
-<h1>Teachers and Admin Dashboard</h1>
+<x-layouts.app>
+    <h1>Dashboard</h1>
+</x-layouts.app>
