@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -9,17 +10,17 @@ require __DIR__.'/auth.php';
 
 // Index route
 Route::middleware('auth')->group(function () {
-    Route::get('/', [UserController::class, 'index']);
+    Route::get('/', [UserController::class, 'index'])->name('index');
 
-    Route::prefix('/profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::prefix('/profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
     });
 
-    Route::prefix('/private')->group(function () {
-        Route::get('/dashboard', [UserController::class, 'private-index'])->name('dashboard');
-    })->name('private');
+    Route::prefix('/private')->name('private.')->group(function () {
+        Route::get('/courses', [CourseController::class, 'private_courses'])->name('courses');
+    });
 });
 
 Route::get('/about-us', [InfoController::class, 'about_us'])->name('about-us');

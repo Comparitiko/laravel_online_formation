@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: system-ui, Poppins, Roboto, sans-serif;
 }
 .form-container {
     animation: fadeIn 0.5s ease-out;

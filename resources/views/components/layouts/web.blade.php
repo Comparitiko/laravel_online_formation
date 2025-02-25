@@ -2,17 +2,10 @@
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title }}</title>
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
+<x-layouts.heads.simple-head title="{{ $title }}" />
 <body class="font-sans antialiased">
 <div class="min-h-screen bg-gray-100">
-    <x-layouts.navigation />
+    <x-layouts.navigators.web-navigation />
 
     <!-- Page Heading -->
     @isset($header)
