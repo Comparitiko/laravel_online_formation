@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,9 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('/private')->name('private.')->group(function () {
         Route::get('/courses', [CourseController::class, 'private_courses'])->name('courses');
+        Route::get('/registrations', [RegistrationController::class, 'private_registrations'])->name('registrations');
+        Route::get('/evaluations', [EvaluationController::class, 'private_evaluations'])->name('evaluations');
+        Route::get('/users', [UserController::class, 'private_users'])->name('users');
     });
 });
 
