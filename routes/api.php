@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\UserController;
@@ -17,8 +18,10 @@ Route::prefix('/v1')->group(function () {
             Route::get('/{course}', [CourseController::class, 'api_show']);
 
             // Only admins can create and delete courses
-            Route::post('/', [CourseController::class, 'api_create']);
-            Route::delete('/{course}', [CourseController::class, 'api_delete']);
+            Route::middleware('role:'. UserRole::ADMIN->value)->group(function () {
+                Route::post('/', [CourseController::class, 'api_create']);
+                Route::delete('/{course}', [CourseController::class, 'api_delete']);
+            });
         });
 
         // Students routes

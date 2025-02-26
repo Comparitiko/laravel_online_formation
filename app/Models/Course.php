@@ -19,7 +19,7 @@ class Course extends Model
         'description',
         'duration',
         'teacher_id',
-        'category_id'
+        'category_id',
     ];
 
     protected function casts(): array

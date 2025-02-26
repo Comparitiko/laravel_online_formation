@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\InfoController;
@@ -14,17 +15,30 @@ require __DIR__.'/auth.php';
 Route::middleware('auth')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
 
-    Route::prefix('/profile')->name('profile.')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-        Route::patch('/', [ProfileController::class, 'update'])->name('update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
-    });
+    // Only verified users can enter here
+    Route::middleware('verified')->group(function () {
+        Route::prefix('/profile')
+            ->name('profile.')
+            ->group(function () {
+                Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+                Route::patch('/', [ProfileController::class, 'update'])->name('update');
+                Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+            });
 
-    Route::prefix('/private')->name('private.')->group(function () {
-        Route::get('/courses', [CourseController::class, 'private_courses'])->name('courses');
-        Route::get('/registrations', [RegistrationController::class, 'private_registrations'])->name('registrations');
-        Route::get('/evaluations', [EvaluationController::class, 'private_evaluations'])->name('evaluations');
-        Route::get('/users', [UserController::class, 'private_users'])->name('users');
+        Route::middleware('role:'. UserRole::STUDENT->value)
+            ->group(function () {
+                // Web side here
+            });
+
+        Route::prefix('/private')
+            ->name('private.')
+            ->middleware('role:'. UserRole::TEACHER->value)
+            ->group(function () {
+                Route::get('/courses', [CourseController::class, 'private_courses'])->name('courses');
+                Route::get('/registrations', [RegistrationController::class, 'private_registrations'])->name('registrations');
+                Route::get('/evaluations', [EvaluationController::class, 'private_evaluations'])->name('evaluations');
+                Route::get('/users', [UserController::class, 'private_users'])->name('users');
+            });
     });
 });
 

@@ -22,6 +22,7 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     *
      * @throws ValidationException
      */
     public function store(LoginRequest $request): RedirectResponse
@@ -30,7 +31,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (!$request->user()->hasVerifiedEmail()) {
+        if (! $request->user()->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
 

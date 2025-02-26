@@ -85,19 +85,20 @@ class CourseController extends Controller
         // Check if the teacher id is a real teacher
         $teacher = User::find($request->teacher_id)->where('role', UserRole::TEACHER)->first();
 
-        if (!$teacher) {
+        if (! $teacher) {
             return response()->json(['message' => 'The teacher_id is not a valid id']);
         }
 
         // Create the new course
-        $course = new Course();
+        $course = new Course;
         $course->fill($request->all());
         $course->save();
 
         return response()->json(['message' => 'Course created successfully']);
     }
 
-    public function api_delete(Request $request, Course $course) {
+    public function api_delete(Request $request, Course $course)
+    {
         if ($request->user()->cannot('deleteCourse', Course::class)) {
             return response()->json(['message' => 'You are not authorized to delete this course'], 403);
         }

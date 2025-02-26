@@ -22,12 +22,15 @@ class UserController extends Controller
     public function index(Request $request): RedirectResponse|View
     {
         // Check if the user has verified email to force to verify
-        if (!$request->user()->hasVerifiedEmail()) {
+        if (! $request->user()->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
 
         $role = $request->user()->role;
-        if ($role === UserRole::STUDENT) return view('pages.public.courses');
+        if ($role === UserRole::STUDENT) {
+            return view('pages.public.courses');
+        }
+
         return redirect()->route('private.courses');
     }
 
@@ -151,8 +154,10 @@ class UserController extends Controller
 
         // Update the registration state to cancelled
         $registration->state = RegistrationState::CANCELLED;
-        $registration->save();
+        if ($registration->save()) {
+            return response()->json(['message' => 'Registration deleted successfully']);
+        }
 
-        return response()->json(['message' => 'Registration deleted successfully']);
+        return response()->json(['message' => 'Something went wrong while deleting the registration'])->setStatusCode(500);
     }
 }

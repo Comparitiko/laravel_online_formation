@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-//use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Notifications\VerifyEmail;
@@ -62,7 +62,7 @@ class User extends Authenticatable
 
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new VerifyEmail());
+        $this->notify(new VerifyEmail);
     }
 
     /**
