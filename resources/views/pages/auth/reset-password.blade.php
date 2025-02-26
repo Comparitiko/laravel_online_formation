@@ -1,4 +1,4 @@
-<x-layouts.guest>
+<x-layouts.guest title="Restablecer contraseña">
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 

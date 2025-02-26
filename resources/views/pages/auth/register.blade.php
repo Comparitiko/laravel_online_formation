@@ -1,4 +1,4 @@
-<x-layouts.guest title="Formación registro">
+<x-layouts.guest title="Registro">
     <main class="bg-slate-800 min-h-screen flex items-center justify-center p-4">
         <section class="form-container bg-slate-700 rounded-xl shadow-lg overflow-hidden w-full max-w-md">
             <!-- Formulario de Registro -->

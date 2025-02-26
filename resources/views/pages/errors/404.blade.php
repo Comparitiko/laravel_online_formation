@@ -1,4 +1,4 @@
-<x-layouts.guest title="404 Página no encontrada">
+<x-layouts.guest title="Error 404">
     <main class="bg-gray-900 min-h-screen flex flex-col items-center justify-center">
         <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
             <div class="mx-auto max-w-screen-sm text-center">

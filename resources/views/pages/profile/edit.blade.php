@@ -1,4 +1,4 @@
-<x-layouts.guest title="Profile">
+<x-layouts.guest title="Editar perfil">
     <main class="bg-slate-800 min-h-screen flex flex-col items-center justify-center p-6">
         <h1 class="text-4xl text-white font-bold">Edición del perfil</h1>
         <div class="py-12">

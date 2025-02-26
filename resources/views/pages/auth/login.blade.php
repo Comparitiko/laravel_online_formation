@@ -1,4 +1,4 @@
-<x-layouts.guest title="Formación inicio sesión">
+<x-layouts.guest title="Inicio de sesión">
     <main class="bg-slate-800 min-h-screen flex items-center justify-center p-4">
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />

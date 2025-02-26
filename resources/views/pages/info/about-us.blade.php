@@ -1,4 +1,4 @@
-<x-layouts.guest title="Formación | Sobre nosotros">
+<x-layouts.guest title="Sobre nosotros">
     <main class="bg-slate-800 min-h-screen p-4 text-white">
         <h1 class="mb-4 text-sm text-center text-xl">
             Sobre nosotros
