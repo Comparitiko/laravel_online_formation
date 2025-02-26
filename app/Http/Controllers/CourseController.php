@@ -16,7 +16,9 @@ class CourseController extends Controller
 {
     public function private_courses()
     {
-        return view('pages.private.courses');
+        $courses = Course::all();
+
+        return view('pages.private.courses', ['courses' => $courses]);
     }
 
     public function api_index(Request $request)
