@@ -5,9 +5,19 @@
 body {
     font-family: system-ui, Poppins, Roboto, sans-serif;
 }
+
 .form-container {
     animation: fadeIn 0.5s ease-out;
 }
+
+.btn-primary {
+    @apply text-white bg-blue-800 py-2 px-4 rounded-md hover:bg-blue-700 hover:text-gray-200 active:bg-blue-900 cursor-pointer
+}
+
+.disabled-btn {
+    @apply text-black bg-gray-700 py-2 px-4 rounded-md cursor-default
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }

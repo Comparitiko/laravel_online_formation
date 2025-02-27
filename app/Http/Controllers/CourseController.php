@@ -16,7 +16,7 @@ class CourseController extends Controller
 {
     public function private_courses()
     {
-        $courses = Course::all();
+        $courses = Course::paginate(10);
 
         return view('pages.private.courses', ['courses' => $courses]);
     }

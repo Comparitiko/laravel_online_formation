@@ -25,14 +25,14 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
             });
 
-        Route::middleware('role:'. UserRole::STUDENT->value)
+        Route::middleware('role:'.UserRole::STUDENT->value)
             ->group(function () {
                 // Web side here
             });
 
         Route::prefix('/private')
             ->name('private.')
-            ->middleware('role:'. UserRole::TEACHER->value)
+            ->middleware('role:'.UserRole::TEACHER->value)
             ->group(function () {
                 Route::get('/courses', [CourseController::class, 'private_courses'])->name('courses');
                 Route::get('/registrations', [RegistrationController::class, 'private_registrations'])->name('registrations');
