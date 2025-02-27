@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CourseController extends Controller
 {
@@ -19,6 +20,11 @@ class CourseController extends Controller
         $courses = Course::paginate(10);
 
         return view('pages.private.courses', ['courses' => $courses]);
+    }
+
+    public function public_course_index(): View
+    {
+        return view('pages.public.courses');
     }
 
     public function api_index(Request $request)

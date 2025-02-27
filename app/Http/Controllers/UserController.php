@@ -19,7 +19,7 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index(Request $request): RedirectResponse|View
+    public function index(Request $request): RedirectResponse
     {
         // Check if the user has verified email to force to verify
         if (! $request->user()->hasVerifiedEmail()) {
@@ -28,10 +28,10 @@ class UserController extends Controller
 
         $role = $request->user()->role;
         if ($role === UserRole::STUDENT) {
-            return view('pages.public.courses');
+            return redirect()->route('students.courses.index');
         }
 
-        return redirect()->route('private.courses');
+        return redirect()->route('private.courses.index');
     }
 
     /**
