@@ -56,7 +56,12 @@
                                 ¿Has olvidado tu contraseña?
                             </a>
                         @endif
-                        <x-primary-button type="submit" class="w-1/2">Iniciar sesión</x-primary-button>
+                        <x-buttons.primary-button
+                            type="submit"
+                            class="w-1/2"
+                        >
+                            Iniciar sesión
+                        </x-buttons.primary-button>
                     </div>
                 </form>
             </div>

@@ -121,7 +121,12 @@
                         </small>
                     </div>
                     <div class="flex justify-end">
-                        <x-primary-button class="w-1/2" type="submit">Crear cuenta</x-primary-button>
+                        <x-buttons.primary-button
+                            class="w-1/2"
+                            type="submit"
+                        >
+                            Crear cuenta
+                        </x-buttons.primary-button>
                     </div>
                 </form>
             </div>
