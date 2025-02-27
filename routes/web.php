@@ -2,6 +2,7 @@
 
 use App\Enums\UserRole;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseMaterialController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\ProfileController;
@@ -25,9 +26,36 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
             });
 
-        Route::middleware('role:'.UserRole::STUDENT->value)
+        // Public web routes
+        Route::prefix('/students')
+            ->name('students.')
+            ->middleware('role:'.UserRole::STUDENT->value)
             ->group(function () {
-                // Web side here
+                // Courses routes
+                Route::prefix('/courses')
+                    ->name('courses.')
+                    ->group(function () {
+                        // Index courses route
+                        Route::get('/', [CourseController::class, 'public_course_index'])
+                            ->name('index');
+
+                        // Registered courses route
+                        Route::get('/registered', [CourseController::class, 'public_course_registered'])
+                            ->name('registered');
+
+                        // Material courses route
+                        Route::get('/{course}/materials', [CourseMaterialController::class, 'public_course_materials'])
+                            ->name('materials');
+                    });
+
+                // Registrations routes
+                Route::prefix('/registrations')
+                    ->name('registrations.')
+                    ->group(function () {
+                        // Create registration to a course
+                        Route::get('/{course}')
+                            ->name('create');
+                    });
             });
 
         // Private routes
