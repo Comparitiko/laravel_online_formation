@@ -133,7 +133,7 @@ Route::middleware('auth')->group(function () {
                 //  Users routes
                 Route::prefix('/users')
                     ->name('users.')
-                    ->middleware('role:' .UserRole::ADMIN->value)
+                    ->middleware('role:'.UserRole::ADMIN->value)
                     ->group(function () {
                         // Users index route
                         Route::get('/users', [UserController::class, 'private_users'])
