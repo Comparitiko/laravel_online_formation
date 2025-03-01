@@ -4,7 +4,7 @@
 ])
 
 <option
-    @if ($value === $selected_option)
+    @if ($value == $selected_option)
         selected
     @endif
     value="{{ $value }}"

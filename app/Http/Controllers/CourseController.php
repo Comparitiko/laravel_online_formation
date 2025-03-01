@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\CourseState;
 use App\Enums\UserRole;
 use App\Http\Requests\Courses\CreateCourseRequest;
+use App\Http\Requests\Courses\CreateFormCourseRequest;
+use App\Http\Requests\Courses\EditFormCourseRequest;
 use App\Http\Resources\Course\AllInfoCourseResource;
 use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Category;
@@ -62,10 +64,8 @@ class CourseController extends Controller
      */
     public function private_create_courses_form(Request $request): View
     {
-        // Check if not is admin to return a 404
-        if (! $request->user()->isAdmin()) {
-            abort(404);
-        }
+        // Check if user can create a new course
+        if ($request->user()->cannot('createCourse', Course::class)) abort(404);
 
         // Get teachers names and ids from cache
         $teachers = $this->getTeachersNamesFromCache();
@@ -81,10 +81,10 @@ class CourseController extends Controller
 
     /**
      * Handle route to create a new course retrieving the course from the request
-     * @param CreateCourseRequest $request
+     * @param CreateFormCourseRequest $request
      * @return RedirectResponse
      */
-    public function private_create_courses(CreateCourseRequest $request): RedirectResponse
+    public function private_create_courses(CreateFormCourseRequest $request): RedirectResponse
     {
         // Check if user can create a new course
         if ($request->user()->cannot('createCourse', Course::class)) abort(404);
@@ -116,7 +116,48 @@ class CourseController extends Controller
     }
 
     /**
-     * Handle the route to show all courses in the public side of the webº
+     * Handle route the view of the form to edit a course in the private side of the web
+     * @param CreateFormCourseRequest $request
+     * @param Course $course
+     * @return View
+     */
+    public function private_edit_course_form(Request $request, Course $course): View
+    {
+        // Check if user can edit a course
+        if ($request->user()->cannot('editCourse', $course)) abort(404);
+
+        // Get teachers names and ids from cache
+        $teachers = $this->getTeachersNamesFromCache();
+
+        // Retrieve categories ids and names from cache
+        $categories = $this->getCategoriesNamesFromCache();
+
+        return view('pages.private.courses.edit-course', [
+            'course' => $course,
+            'teachers' => $teachers,
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * Handle route the edit course with the incoming request
+     * @param EditFormCourseRequest $request
+     * @param Course $course
+     * @return RedirectResponse
+     */
+    public function private_edit_course(EditFormCourseRequest $request, Course $course): RedirectResponse
+    {
+        // Check if user can edit a course
+        if ($request->user()->cannot('editCourse', $course)) abort(404);
+
+        // If database fail send an error message
+        if (!$course->update($request->all())) return redirect()->back()->with('error', 'Error en el servidor vuelve a intentarlo mas tarde');
+
+        return redirect()->route('private.courses.index');
+    }
+
+    /**
+     * Handle the route to show all courses in the public side of the web
      */
     public function public_course_index(): View
     {

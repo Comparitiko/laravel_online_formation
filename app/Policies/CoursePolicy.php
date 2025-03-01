@@ -37,6 +37,18 @@ class CoursePolicy
     }
 
     /**
+     * Check if user can edit the course
+     * @param User $user
+     * @param Course $course
+     * @return bool
+     */
+    public function editCourse(User $user, Course $course): bool
+    {
+        // Only the teacher of the course can edit the course
+        return $user->isTeacher() && $user->isTeacherOf($course);
+    }
+
+    /**
      * Check if the user can cancel the course
      */
     public function cancelCourse(User $user, Course $course): bool
