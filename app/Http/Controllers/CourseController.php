@@ -15,34 +15,37 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class CourseController extends Controller
 {
     /**
      * Handle route to show courses in the private side of the web
-     * @param Request $request
+     *
      * @return Factory|\Illuminate\Contracts\View\View|Application|object
      */
     public function private_courses(Request $request)
     {
         $user = $request->user();
 
-        if ($user->isAdmin()) $courses = Course::paginate(10);
-        else $courses = Course::where('teacher_id', $user->id)->paginate(10);
+        if ($user->isAdmin()) {
+            $courses = Course::paginate(10);
+        } else {
+            $courses = Course::where('teacher_id', $user->id)->paginate(10);
+        }
 
-        return view('pages.private.courses', ['courses' => $courses]);
+        return view('pages.private.courses.courses', ['courses' => $courses]);
     }
 
     /**
      * Handle route to finish a course in the private side of the web
-     * @param Course $course
-     * @param Request $request
-     * @return RedirectResponse
      */
     public function private_finish_course(Course $course, Request $request): RedirectResponse
     {
-        if ($request->user()->cannot('cancelCourse', $course)) abort(404);
+        if ($request->user()->cannot('cancelCourse', $course)) {
+            abort(404);
+        }
 
         // Update the course state
         $course->state = CourseState::FINISHED;
@@ -52,8 +55,31 @@ class CourseController extends Controller
     }
 
     /**
+     * Handle route to create a new course, only admins can
+     *
+     * @return Factory|\Illuminate\Contracts\View\View|Application|object
+     */
+    public function private_create_courses_form(Request $request)
+    {
+        // Check if not is admin to return a 404
+        if (! $request->user()->isAdmin()) {
+            abort(404);
+        }
+
+        // Get teachers names and ids from cache
+        $teachers = $this->getTeachersNamesFromCache();
+
+        // Retrieve categories ids and names from cache
+        $categories = $this->getCategoriesNamesFromCache();
+
+        return view('pages.private.courses.create-course', [
+            'categories' => $categories,
+            'teachers' => $teachers,
+        ]);
+    }
+
+    /**
      * Handle the route to show all courses in the public side of the webº
-     * @return View
      */
     public function public_course_index(): View
     {
@@ -62,7 +88,7 @@ class CourseController extends Controller
 
     /**
      * Handle route to show all courses in API
-     * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function api_index(Request $request)
@@ -118,7 +144,7 @@ class CourseController extends Controller
 
     /**
      * Handle route to show the information of one course in API
-     * @param Course $course
+     *
      * @return AllInfoCourseResource
      */
     public function api_show(Course $course)
@@ -128,7 +154,7 @@ class CourseController extends Controller
 
     /**
      * Handle route to create a course in API
-     * @param CreateCourseRequest $request
+     *
      * @return JsonResponse
      */
     public function api_create(CreateCourseRequest $request)
@@ -155,8 +181,7 @@ class CourseController extends Controller
 
     /**
      * Handle route to delete a course in API
-     * @param Request $request
-     * @param Course $course
+     *
      * @return JsonResponse
      */
     public function api_delete(Request $request, Course $course)
@@ -170,5 +195,43 @@ class CourseController extends Controller
         }
 
         return response()->json(['message' => 'Error deleting course'], 400);
+    }
+
+    /**
+     * Get all the teacher names and ids from the cache
+     *
+     * @return mixed
+     */
+    private function getTeachersNamesFromCache()
+    {
+        // If the data are not in cache retrieve from database and then save it
+        if (! Cache::has('teachers_names')) {
+            $teachers = User::select('id', 'name')->where('role', UserRole::TEACHER)->get();
+            Cache::put('teachers_names', $teachers);
+            dd('saved');
+        } else {
+            $teachers = Cache::get('teachers_names');
+            dd($teachers);
+        }
+
+        return $teachers;
+    }
+
+    /**
+     * Get all the categories names and ids from the cache
+     *
+     * @return mixed
+     */
+    private function getCategoriesNamesFromCache()
+    {
+        // If the data are not in cache retrieve from database and then save it
+        if (! Cache::has('categories_names')) {
+            $categories = Category::select('id', 'course_area_name')->get();
+            Cache::put('categories_names', $categories);
+        } else {
+            $categories = Cache::get('categories_names');
+        }
+
+        return $categories;
     }
 }
