@@ -57,7 +57,6 @@
                         </x-option>
                     @endforeach
                 </x-select>
-                {{old('teacher_id', $course->teacher_id)}}
                 <x-input-error :messages="$errors->get('teacher_id')" class="mt-2" />
             </div>
 
@@ -75,7 +74,6 @@
                         </x-option>
                     @endforeach
                 </x-select>
-                {{old('category_id', $course->category_id)}}
                 <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
             </div>
             <div class="flex items-center justify-around mt-4">

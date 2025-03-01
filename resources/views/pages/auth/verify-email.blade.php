@@ -1,6 +1,6 @@
 <x-layouts.guest title="Verificar email">
     <main class="bg-slate-800 min-h-screen flex flex-col items-center justify-center p-4">
-        <h1 class="mb-4 text-sm text-white text-xl">
+        <h1 class="mb-4 text-white text-xl">
             Gracias por registrarte. Por favor verifica tu correo electrónico para finalizar el proceso.
         </h1>
 
@@ -15,20 +15,20 @@
                 @csrf
 
                 <div>
-                    <x-primary-button>
+                    <x-buttons.primary-button>
                         Reenviar verificación de correo electrónico
-                    </x-primary-button>
+                    </x-buttons.primary-button>
                 </div>
             </form>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <x-secondary-button
+                <x-buttons.secondary-button
                     type="submit"
                     class="hover:underline"
                 >
                     Cerrar sesión
-                </x-secondary-button>
+                </x-buttons.secondary-button>
             </form>
         </div>
     </main>

@@ -161,7 +161,7 @@ class CourseController extends Controller
      */
     public function public_course_index(): View
     {
-        return view('pages.public.courses');
+        return view('pages.public.courses.courses');
     }
 
     /**
@@ -285,7 +285,7 @@ class CourseController extends Controller
         // If the data are not in cache retrieve from database and then save it
         if (! Cache::has('teachers_names')) {
             $teachers = User::select('id', 'name')->where('role', UserRole::TEACHER)->get();
-            Cache::put('teachers_names', $teachers);
+            Cache::put('teachers_names', $teachers, now()->addHours(2));
         } else {
             $teachers = Cache::get('teachers_names');
         }
@@ -303,7 +303,7 @@ class CourseController extends Controller
         // If the data are not in cache retrieve from database and then save it
         if (! Cache::has('categories_names')) {
             $categories = Category::select('id', 'course_area_name')->get();
-            Cache::put('categories_names', $categories);
+            Cache::put('categories_names', $categories, now()->addHours(2));
         } else {
             $categories = Cache::get('categories_names');
         }

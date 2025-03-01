@@ -6,7 +6,6 @@
                 <h2 class="text-3xl font-bold text-white mb-6">Registrarse</h2>
                 <form action="{{route('register') }}" method="POST">
                     @csrf
-                    <x-errors />
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div class="mb-6 relative">
                             <x-text-input
