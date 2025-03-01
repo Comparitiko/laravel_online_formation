@@ -1,5 +1,4 @@
 @php
-  use App\Enums\UserRole;
   use \Illuminate\Support\Facades\Auth;
 @endphp
 
@@ -17,34 +16,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link
-                        :href="route('private.courses')"
-                        :active="request()->routeIs('private.courses')"
-                    >
-                        Cursos
-                    </x-nav-link>
-                    <x-nav-link
-                        :href="route('private.registrations')"
-                        :active="request()->routeIs('private.registrations')"
-                    >
-                        Inscripciones
-                    </x-nav-link>
-                    <x-nav-link
-                        :href="route('private.evaluations')"
-                        :active="request()->routeIs('private.evaluations')"
-                    >
-                        Evaluaciones
-                    </x-nav-link>
-                    <!-- Only show this to admins -->
-                    @if(Auth::user()->role === UserRole::ADMIN)
-                        <x-nav-link
-                            :href="route('private.users')"
-                            :active="request()->routeIs('private.users')"
-                        >
-                            Usuarios
-                        </x-nav-link>
-                    @endif
-
+                    <x-layouts.navigators.private-nav-links />
                 </div>
             </div>
 
@@ -107,32 +79,7 @@
     <!-- Responsive Navigation Menu -->
     <div id="burguer-menu" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link
-                :href="route('private.courses')"
-                :active="request()->routeIs('private.courses')"
-            >
-                Cursos
-            </x-responsive-nav-link>
-            <x-responsive-nav-link
-                :href="route('private.evaluations')"
-                :active="request()->routeIs('private.evaluations')"
-            >
-                Inscripciones
-            </x-responsive-nav-link>
-            <x-responsive-nav-link
-                :href="route('private.evaluations')"
-                :active="request()->routeIs('private.evaluations')"
-            >
-                Evaluaciones
-            </x-responsive-nav-link>
-            @if(Auth::user()->role === UserRole::ADMIN)
-                <x-responsive-nav-link
-                    :href="route('private.evaluations')"
-                    :active="request()->routeIs('private.evaluations')"
-                >
-                    Usuarios
-                </x-responsive-nav-link>
-            @endif
+            <x-layouts.navigators.private-nav-links />
         </div>
 
         <!-- Responsive Settings Options -->
