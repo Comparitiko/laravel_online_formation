@@ -5,19 +5,19 @@
 
 <x-nav-link
     :href="route('private.courses.index')"
-    :active="request()->routeIs('private.courses')"
+    :active="request()->is('/private/courses/*') || request()->routeIs('private.courses.index')"
 >
     Cursos
 </x-nav-link>
 <x-nav-link
     :href="route('private.registrations.index')"
-    :active="request()->routeIs('private.registrations.index')"
+    :active="request()->is('/private/registrations/*') || request()->routeIs('private.registrations.index')"
 >
     Inscripciones
 </x-nav-link>
 <x-nav-link
     :href="route('private.evaluations.index')"
-    :active="request()->routeIs('private.evaluations.index')"
+    :active="request()->is('/private/evaluations/*') || request()->routeIs('private.evaluations.index')"
 >
     Evaluaciones
 </x-nav-link>
@@ -25,7 +25,7 @@
 @if(Auth::user()->role === UserRole::ADMIN)
     <x-nav-link
         :href="route('private.users')"
-        :active="request()->routeIs('private.users.index')"
+        :active="request()->is('/private/users/*') || request()->routeIs('private.users.index')"
     >
         Usuarios
     </x-nav-link>
