@@ -59,7 +59,7 @@ class CourseController extends Controller
      *
      * @return Factory|\Illuminate\Contracts\View\View|Application|object
      */
-    public function private_create_courses_form(Request $request)
+    public function private_create_courses_form(Request $request): View
     {
         // Check if not is admin to return a 404
         if (! $request->user()->isAdmin()) {
@@ -76,6 +76,24 @@ class CourseController extends Controller
             'categories' => $categories,
             'teachers' => $teachers,
         ]);
+    }
+
+    /**
+     * Handle route to create a new course retrieving the course from the request
+     * @param CreateCourseRequest $request
+     * @return RedirectResponse
+     */
+    public function private_create_courses(CreateCourseRequest $request): RedirectResponse
+    {
+        // Check if user can create a new course
+        if ($request->user()->cannot('createCourse', Course::class)) abort(404);
+
+        // Save course
+        $course = new Course();
+        $course->fill($request->all());
+        $course->save();
+
+        return redirect()->route('private.courses.index');
     }
 
     /**
