@@ -208,10 +208,8 @@ class CourseController extends Controller
         if (! Cache::has('teachers_names')) {
             $teachers = User::select('id', 'name')->where('role', UserRole::TEACHER)->get();
             Cache::put('teachers_names', $teachers);
-            dd('saved');
         } else {
             $teachers = Cache::get('teachers_names');
-            dd($teachers);
         }
 
         return $teachers;
