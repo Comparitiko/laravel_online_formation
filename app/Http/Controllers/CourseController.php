@@ -51,7 +51,8 @@ class CourseController extends Controller
         $course->state = CourseState::FINISHED;
         $course->save();
 
-        return redirect()->route('private.courses.index');
+        // Redirect back to the last page visited
+        return redirect()->back();
     }
 
     /**
@@ -94,6 +95,24 @@ class CourseController extends Controller
         $course->save();
 
         return redirect()->route('private.courses.index');
+    }
+
+    /**
+     * Handle route to delete courses in the private side of the web
+     * @param Request $request
+     * @param Course $course
+     * @return RedirectResponse
+     */
+    public function private_delete_course(Request $request, Course $course): RedirectResponse
+    {
+        // Check if user can delete the course
+        if ($request->user()->cannot('deleteCourse', Course::class)) abort(404);
+
+        // If error while deleting the course redirect back with error message
+        if (!$course->delete()) return redirect()->back()->with('error', 'Prueba de nuevo mas tarde');
+
+        // Redirect back to the last page visited
+        return redirect()->back();
     }
 
     /**
