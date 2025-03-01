@@ -65,7 +65,9 @@ class CourseController extends Controller
     public function private_create_courses_form(Request $request): View
     {
         // Check if user can create a new course
-        if ($request->user()->cannot('createCourse', Course::class)) abort(404);
+        if ($request->user()->cannot('createCourse', Course::class)) {
+            abort(404);
+        }
 
         // Get teachers names and ids from cache
         $teachers = $this->getTeachersNamesFromCache();
@@ -81,16 +83,16 @@ class CourseController extends Controller
 
     /**
      * Handle route to create a new course retrieving the course from the request
-     * @param CreateFormCourseRequest $request
-     * @return RedirectResponse
      */
     public function private_create_courses(CreateFormCourseRequest $request): RedirectResponse
     {
         // Check if user can create a new course
-        if ($request->user()->cannot('createCourse', Course::class)) abort(404);
+        if ($request->user()->cannot('createCourse', Course::class)) {
+            abort(404);
+        }
 
         // Save course
-        $course = new Course();
+        $course = new Course;
         $course->fill($request->all());
         $course->save();
 
@@ -99,17 +101,18 @@ class CourseController extends Controller
 
     /**
      * Handle route to delete courses in the private side of the web
-     * @param Request $request
-     * @param Course $course
-     * @return RedirectResponse
      */
     public function private_delete_course(Request $request, Course $course): RedirectResponse
     {
         // Check if user can delete the course
-        if ($request->user()->cannot('deleteCourse', Course::class)) abort(404);
+        if ($request->user()->cannot('deleteCourse', Course::class)) {
+            abort(404);
+        }
 
         // If error while deleting the course redirect back with error message
-        if (!$course->delete()) return redirect()->back()->with('error', 'Prueba de nuevo mas tarde');
+        if (! $course->delete()) {
+            return redirect()->back()->with('error', 'Prueba de nuevo mas tarde');
+        }
 
         // Redirect back to the last page visited
         return redirect()->back();
@@ -117,14 +120,15 @@ class CourseController extends Controller
 
     /**
      * Handle route the view of the form to edit a course in the private side of the web
-     * @param CreateFormCourseRequest $request
-     * @param Course $course
-     * @return View
+     *
+     * @param  CreateFormCourseRequest  $request
      */
     public function private_edit_course_form(Request $request, Course $course): View
     {
         // Check if user can edit a course
-        if ($request->user()->cannot('editCourse', $course)) abort(404);
+        if ($request->user()->cannot('editCourse', $course)) {
+            abort(404);
+        }
 
         // Get teachers names and ids from cache
         $teachers = $this->getTeachersNamesFromCache();
@@ -135,23 +139,24 @@ class CourseController extends Controller
         return view('pages.private.courses.edit-course', [
             'course' => $course,
             'teachers' => $teachers,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
     /**
      * Handle route the edit course with the incoming request
-     * @param EditFormCourseRequest $request
-     * @param Course $course
-     * @return RedirectResponse
      */
     public function private_edit_course(EditFormCourseRequest $request, Course $course): RedirectResponse
     {
         // Check if user can edit a course
-        if ($request->user()->cannot('editCourse', $course)) abort(404);
+        if ($request->user()->cannot('editCourse', $course)) {
+            abort(404);
+        }
 
         // If database fail send an error message
-        if (!$course->update($request->all())) return redirect()->back()->with('error', 'Error en el servidor vuelve a intentarlo mas tarde');
+        if (! $course->update($request->all())) {
+            return redirect()->back()->with('error', 'Error en el servidor vuelve a intentarlo mas tarde');
+        }
 
         return redirect()->route('private.courses.index');
     }

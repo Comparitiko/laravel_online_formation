@@ -24,6 +24,7 @@ class EditFormCourseRequest extends FormRequest
     {
         // Get the id of the editing course
         $actualId = $this->route('course')->id;
+
         return [
             'name' => ['required', 'string', 'max:255',
                 Rule::unique('courses', 'name')->ignore($actualId)],

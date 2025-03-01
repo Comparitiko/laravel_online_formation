@@ -38,9 +38,6 @@ class CoursePolicy
 
     /**
      * Check if user can edit the course
-     * @param User $user
-     * @param Course $course
-     * @return bool
      */
     public function editCourse(User $user, Course $course): bool
     {
