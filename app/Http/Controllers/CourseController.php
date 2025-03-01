@@ -15,9 +15,11 @@ use Illuminate\View\View;
 
 class CourseController extends Controller
 {
-    public function private_courses()
+    public function private_courses(Request $request)
     {
-        $courses = Course::paginate(10);
+        $user = $request->user();
+        if ($user->isAdmin()) $courses = Course::paginate(10);
+        else $courses = Course::where('teacher_id', $user->id)->paginate(10);
 
         return view('pages.private.courses', ['courses' => $courses]);
     }

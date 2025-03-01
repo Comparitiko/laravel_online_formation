@@ -7,7 +7,7 @@ body {
 }
 
 .btn {
-    @apply py-2 px-4 cursor-pointer rounded
+    @apply py-2 px-4 rounded
 }
 
 .form-container {

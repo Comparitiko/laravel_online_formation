@@ -1,8 +1,10 @@
 <x-layouts.private title="Cursos">
     <main class="max-w-6xl p-10 m-auto">
-        <div class="my-4">
-            <x-buttons.create-button :href="route('private.courses.create-form')">Crear curso</x-buttons.create-button>
-        </div>
+        @if( Auth::user()->isAdmin() )
+            <div class="my-4">
+                <x-buttons.create-button :href="route('private.courses.create-form')">Crear curso</x-buttons.create-button>
+            </div>
+        @endif
         <div class="relative overflow-auto shadow-xl rounded-xl border-gray-900">
             <x-tables.table>
                 <x-tables.thead>
@@ -33,8 +35,23 @@
                             >
                                 {{ $course->teacher->name }}
                             </x-tables.tbody-td>
-                            <x-tables.tbody-td>
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <x-tables.tbody-td optional_classes="flex items-center gap-4">
+                                <x-buttons.edit-button
+                                    :href="route('private.courses.edit-form', ['course' => $course])"
+                                >
+                                    Editar
+                                </x-buttons.edit-button>
+                                @if(Auth::user()->isAdmin())
+                                    <x-buttons.delete-button
+                                        :href="route('private.courses.delete', ['course' => $course])"
+                                    >
+                                        Eliminar
+                                    </x-buttons.delete-button>
+                                @endif
+                                @if(Auth::user()->isTeacher())
+                                    <x-buttons.add-course-material-button :course="$course" />
+                                @endif
+                                <x-buttons.finish-course-button :course="$course" />
                             </x-tables.tbody-td>
                         </x-tables.tbody-tr>
                     @endforeach

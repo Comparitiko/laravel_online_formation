@@ -93,4 +93,9 @@ class Course extends Model
     {
         return $this->hasMany(Registration::class);
     }
+
+    public function isActive()
+    {
+        return $this->state === CourseState::ACTIVE;
+    }
 }
