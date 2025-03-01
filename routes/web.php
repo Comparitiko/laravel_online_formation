@@ -73,13 +73,13 @@ Route::middleware('auth')->group(function () {
 
                         // Create course routes
                         Route::get('/create', [CourseController::class, 'private_create_courses_form'])
-                            ->name('create');
+                            ->name('create-form');
                         Route::post('/', [CourseController::class, 'private_create_courses'])
                             ->name('create');
 
                         // Edit course routes
                         Route::get('/{course}/edit', [CourseController::class, 'private_edit_course_form'])
-                            ->name('edit');
+                            ->name('edit-form');
                         Route::post('/{course}/edit', [CourseController::class, 'private_edit_course'])
                             ->name('edit');
 
@@ -125,7 +125,7 @@ Route::middleware('auth')->group(function () {
 
                         // Create evaluations routes
                         Route::get('/create', [EvaluationController::class, 'private_create_evaluation_form'])
-                            ->name('create');
+                            ->name('create-form');
                         Route::post('/', [EvaluationController::class, 'private_create_evaluation'])
                             ->name('create');
                     });
@@ -141,7 +141,7 @@ Route::middleware('auth')->group(function () {
 
                         // Create user routes
                         Route::get('/create', [UserController::class, 'private_create_user_form'])
-                            ->name('create');
+                            ->name('create-form');
                         Route::post('/', [UserController::class, 'private_create_user'])
                             ->name('create');
 
