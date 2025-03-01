@@ -1,6 +1,5 @@
 @props([
   'value',
-  'text',
   'selected_option'
 ])
 
