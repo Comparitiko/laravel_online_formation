@@ -1,10 +1,5 @@
 <x-layouts.private title="Usuarios">
     <main class="max-w-6xl mx-auto">
-
-        <div class="my-4">
-            <x-buttons.create-button :href="route('private.courses.create-form')">Crear usuario</x-buttons.create-button>
-        </div>
-
         <div class="relative overflow-auto shadow-xl rounded-xl border-gray-900">
             <x-tables.table>
                 <x-tables.thead>
