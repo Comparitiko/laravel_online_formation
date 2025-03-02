@@ -147,8 +147,6 @@ class CourseController extends Controller
      */
     public function private_edit_course(EditFormCourseRequest $request, Course $course): RedirectResponse
     {
-        dd($course);
-
         // Check if user can edit a course
         if ($request->user()->cannot('editCourse', $course)) {
             abort(404);

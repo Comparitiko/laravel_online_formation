@@ -12,7 +12,7 @@ class EditFormCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return request()->user()->isAdmin();
+        return true;
     }
 
     /**
