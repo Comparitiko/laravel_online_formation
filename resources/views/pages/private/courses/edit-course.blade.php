@@ -1,5 +1,5 @@
 <x-layouts.private title="Editar curso {{$course->name}}">
-    <main class="bg-slate-800 min-h-screen flex items-center justify-center p-4">
+    <main class="flex items-center justify-center">
         <x-form
             title="Editar el curso {{$course->name}}"
             :action="route('private.courses.edit', ['course' => $course])"

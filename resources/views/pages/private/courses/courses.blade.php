@@ -1,5 +1,5 @@
 <x-layouts.private title="Cursos">
-    <main class="max-w-6xl p-10 m-auto">
+    <main class="max-w-6xl mx-auto">
         @if( Auth::user()->isAdmin() )
             <div class="my-4">
                 <x-buttons.create-button :href="route('private.courses.create-form')">Crear curso</x-buttons.create-button>

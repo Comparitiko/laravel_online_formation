@@ -2,7 +2,7 @@
   use \Illuminate\Support\Facades\Auth;
 @endphp
 
-<nav class="bg-slate-900 border-b border-gray-700">
+<nav class="bg-slate-900 border-b border-gray-700 fixed top-0 z-50 w-full">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">

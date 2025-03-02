@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -16,8 +17,13 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $tokens = DB::select(
+            'SELECT token, name FROM personal_access_tokens WHERE tokenable_id = ?',
+            [$request->user()->id]);
+
         return view('pages.profile.edit', [
             'user' => $request->user(),
+            'tokens' => $tokens
         ]);
     }
 
@@ -56,5 +62,17 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function generate_token(Request $request): RedirectResponse
+    {
+        // Create token with name
+        $tokenName = $request->token_name ? $request->token_name : 'api_auth';
+
+        $token = $request->user()->createToken($tokenName, ['*'], now()->addDay())->plainTextToken;
+
+        if (!$token) return redirect()->back()->withErrors(['token_name' => 'Error al crear el token']);
+
+        return redirect()->route('profile.edit');
     }
 }

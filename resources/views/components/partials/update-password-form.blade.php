@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium text-white">
             Actualizar contraseña
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-gray-300">
             Asegurate que tu cuenta este usando una contraseña larga, y con varios tipos de de caracteres para estar mas  seguro.
         </p>
     </header>
@@ -32,7 +32,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button type="submit">Guardar</x-primary-button>
+            <x-buttons.primary-button type="submit">Guardar</x-buttons.primary-button>
 
             @if (session('status') === 'password-updated')
                 <p

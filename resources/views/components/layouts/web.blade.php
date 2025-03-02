@@ -17,9 +17,7 @@
     @endisset
 
     <!-- Page Content -->
-    <main>
-        {{ $slot }}
-    </main>
+    {{ $slot }}
 </div>
 </body>
 </html>

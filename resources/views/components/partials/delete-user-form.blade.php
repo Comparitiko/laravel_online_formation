@@ -1,20 +1,20 @@
 <section class="space-y-6">
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium text-white">
             Borrar cuenta
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-gray-300">
             Una vez que tu cuenta haya sido eliminada todos tus datos van a ser eliminados permanentemente
         </p>
     </header>
 
-    <x-danger-button
+    <x-buttons.danger-button
         type="submit"
         onclick="document.querySelector('#modal').classList.toggle('hidden')"
     >
         Borrar cuenta
-    </x-danger-button>
+    </x-buttons.danger-button>
 
     <div id="modal" class="hidden">
         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
@@ -40,16 +40,16 @@
             </div>
 
             <div class="mt-6 flex justify-end">
-                <x-secondary-button
+                <x-buttons.secondary-button
                     class="border-2 shadow-lg hover:underline"
                     onclick="document.querySelector('#modal').classList.add('hidden')"
                 >
                     Cancelar
-                </x-secondary-button>
+                </x-buttons.secondary-button>
 
-                <x-danger-button class="ms-3">
+                <x-buttons.danger-button class="ms-3">
                     Borrar cuenta
-                </x-danger-button>
+                </x-buttons.danger-button>
             </div>
         </form>
     </div>

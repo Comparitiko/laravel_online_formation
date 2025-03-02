@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', [ProfileController::class, 'edit'])->name('edit');
                 Route::patch('/', [ProfileController::class, 'update'])->name('update');
                 Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+                Route::post('/generate-token', [ProfileController::class, 'generate_token'])->name('generate-token');
             });
 
         // Public web routes

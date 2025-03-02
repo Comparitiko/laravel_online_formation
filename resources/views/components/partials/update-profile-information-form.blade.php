@@ -1,10 +1,10 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium text-white">
             Información del perfil
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <p class="mt-1 text-sm text-gray-300">
             Actualiza la información de tu perfil y correo electrónico
         </p>
     </header>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button type="submit">Guardar</x-primary-button>
+            <x-buttons.primary-button type="submit">Guardar</x-buttons.primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p

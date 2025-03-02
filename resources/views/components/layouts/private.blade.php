@@ -8,9 +8,7 @@
             <x-layouts.navigators.private-navigation />
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+            {{ $slot }}
         </div>
     </body>
 </html>
