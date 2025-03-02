@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\CourseState;
 use App\Enums\UserRole;
+use App\Http\Requests\CourseMaterial\CreateCourseMaterialRequest;
 use App\Http\Requests\Courses\CreateCourseRequest;
 use App\Http\Requests\Courses\CreateFormCourseRequest;
 use App\Http\Requests\Courses\EditFormCourseRequest;
@@ -11,6 +12,7 @@ use App\Http\Resources\Course\AllInfoCourseResource;
 use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\CourseMaterial;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -18,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class CourseController extends Controller
@@ -157,6 +160,22 @@ class CourseController extends Controller
             return redirect()->back()->with('error', 'Error en el servidor vuelve a intentarlo mas tarde');
         }
 
+        return redirect()->route('private.courses.index');
+    }
+
+    public function private_add_material_course_form(Request $request, Course $course): View
+    {
+        // Check if user cannot create course materials in the course
+        if ($request->user()->cannot('createCourseMaterials', $course)) abort(404);
+
+        return view('pages.private.courses.add-course-material', ['course' => $course]);
+    }
+
+    public function private_add_material_course(CreateCourseMaterialRequest $request, Course $course): RedirectResponse
+    {
+//        $request->file('file')->store('files');
+
+        Storage::put('files', $request->file());
         return redirect()->route('private.courses.index');
     }
 

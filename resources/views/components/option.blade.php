@@ -4,6 +4,7 @@
 ])
 
 <option
+    class="capitalize"
     @if ($value == $selected_option)
         selected
     @endif

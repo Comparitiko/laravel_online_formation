@@ -96,8 +96,10 @@ Route::middleware('auth')->group(function () {
                         Route::get('/{course}/finish', [CourseController::class, 'private_finish_course'])
                             ->name('finish');
 
-                        // Add material to course route
-                        Route::get('/{course}/add-material', [CourseController::class, 'private_add_material_course'])
+                        // Add materials to course form route
+                        Route::get('/{course}/add-material', [CourseController::class, 'private_add_material_course_form'])
+                            ->name('add-material-form');
+                        Route::post('/{course}/add-material', [CourseController::class, 'private_add_material_course'])
                             ->name('add-material');
                     });
 
@@ -152,7 +154,7 @@ Route::middleware('auth')->group(function () {
 
                         // Delete user route
                         Route::get('/{user}/delete', [UserController::class, 'private_delete_user'])
-                            ->name('create');
+                            ->name('delete');
                     });
             });
     });
