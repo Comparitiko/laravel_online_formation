@@ -16,7 +16,7 @@
                     <x-tables.tbody-tr>
                         <x-tables.tbody-th>{{ $user->dni }}</x-tables.tbody-th>
                         <x-tables.tbody-td>{{ $user->username }}</x-tables.tbody-td>
-                        <x-tables.tbody-td>{{ $user->name }} {{ $user->surname }}</x-tables.tbody-td>
+                        <x-tables.tbody-td>{{ $user->name }} {{ $user->surnames }}</x-tables.tbody-td>
                         <x-tables.tbody-td>{{ $user->email }}</x-tables.tbody-td>
                         <x-tables.tbody-td>
                             {{ $user->phone_number }}
