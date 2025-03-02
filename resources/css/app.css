@@ -19,7 +19,7 @@ body {
 }
 
 .disabled-btn {
-    @apply text-black bg-gray-700 py-2 px-4 rounded-md cursor-default
+    @apply text-white bg-gray-700 py-2 px-4 rounded-md cursor-default
 }
 
 @keyframes fadeIn {

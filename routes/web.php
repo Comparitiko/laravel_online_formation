@@ -85,7 +85,9 @@ Route::middleware('auth')->group(function () {
 
                         // Delete course route
                         Route::get('/{course}/delete', [CourseController::class, 'private_delete_course'])
+                            ->middleware('role:'.UserRole::ADMIN->value)
                             ->name('delete');
+
 
                         // Finish course route
                         Route::get('/{course}/finish', [CourseController::class, 'private_finish_course'])

@@ -126,12 +126,11 @@ class CourseController extends Controller
     public function private_edit_course_form(Request $request, Course $course): View
     {
         // Check if user can edit a course
-        if ($request->user()->cannot('editCourse', $course)) {
-            abort(404);
-        }
+        if ($request->user()->cannot('editCourse', $course)) abort(404);
 
-        // Get teachers names and ids from cache
-        $teachers = $this->getTeachersNamesFromCache();
+        // Get teachers names and ids from cache if is admin, if not send only the user of the logged in teacher
+        if ($request->user()->isAdmin()) $teachers = $this->getTeachersNamesFromCache();
+        else $teachers[] = $request->user();
 
         // Retrieve categories ids and names from cache
         $categories = $this->getCategoriesNamesFromCache();
@@ -148,13 +147,15 @@ class CourseController extends Controller
      */
     public function private_edit_course(EditFormCourseRequest $request, Course $course): RedirectResponse
     {
+        dd($course);
+
         // Check if user can edit a course
         if ($request->user()->cannot('editCourse', $course)) {
             abort(404);
         }
 
         // If database fail send an error message
-        if (! $course->update($request->all())) {
+        if (!$course->update($request->all())) {
             return redirect()->back()->with('error', 'Error en el servidor vuelve a intentarlo mas tarde');
         }
 
