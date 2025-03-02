@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -141,5 +143,20 @@ class User extends Authenticatable
     public function isStudent(): bool
     {
         return $this->role === UserRole::STUDENT;
+    }
+
+    /**
+     * Return true if user has active registrations
+     * @return bool
+     */
+    public function hasActiveRegistrations()
+    {
+        // Get active registrations
+        $numRegistrations = DB::table('registrations')
+            ->where('student_id', $this->id)
+            ->where('state', RegistrationState::CONFIRMED)
+            ->count();
+
+        return $numRegistrations !== 0;
     }
 }

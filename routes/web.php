@@ -143,14 +143,16 @@ Route::middleware('auth')->group(function () {
                     ->middleware('role:'.UserRole::ADMIN->value)
                     ->group(function () {
                         // Users index route
-                        Route::get('/users', [UserController::class, 'private_users'])
+                        Route::get('/', [UserController::class, 'private_users'])
                             ->name('index');
 
-                        // Create user routes
-                        Route::get('/create', [UserController::class, 'private_create_user_form'])
-                            ->name('create-form');
-                        Route::post('/', [UserController::class, 'private_create_user'])
-                            ->name('create');
+                        // Modify user role routes
+                        Route::get('/{user}/student', [UserController::class, 'private_student_role'])
+                            ->name('student');
+                        Route::get('/{user}/teacher', [UserController::class, 'private_teacher_role'])
+                            ->name('teacher');
+                        Route::get('/{user}/admin', [UserController::class, 'private_admin_role'])
+                            ->name('admin');
 
                         // Delete user route
                         Route::get('/{user}/delete', [UserController::class, 'private_delete_user'])

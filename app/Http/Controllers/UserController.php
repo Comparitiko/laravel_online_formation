@@ -35,6 +35,37 @@ class UserController extends Controller
     }
 
     /**
+     * Handle route to show all users
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|object
+     */
+    public function private_users()
+    {
+        $users = User::paginate(10);
+
+        return view('pages.private.users.users', ['users' => $users]);
+    }
+
+    /**
+     * Handle route to delete users
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function private_delete_user(Request $request, User $user): RedirectResponse
+    {
+        // Check if logged user cannot delete users
+        if ($request->user()->cannot('delete', $user)) abort(404);
+
+        // Check if user to remove has active registrations
+        if ($user->hasActiveRegistrations()) abort(404);
+
+        // Check if there is an error deleting user from db
+        if (!$user->delete()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al eliminar el usuario']);
+
+        return redirect()->route('private.users.index');
+    }
+
+    /**
      * Login a user for the API
      *
      * @return JsonResponse
