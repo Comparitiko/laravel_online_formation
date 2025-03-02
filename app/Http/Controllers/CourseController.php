@@ -170,9 +170,6 @@ class CourseController extends Controller
 
     /**
      * Handle route to add material to a specific course
-     * @param Request $request
-     * @param Course $course
-     * @return View
      */
     public function private_add_material_course_form(Request $request, Course $course): View
     {
@@ -188,12 +185,12 @@ class CourseController extends Controller
     {
         $path = $request->file('file')->store('files');
 
-        if (!$path) {
+        if (! $path) {
             return redirect()->back()->withErrors(['file' => 'El archivo no se pudo subir, intentelo de nuevo mas tarde']);
         }
 
         // Create a new course material
-        $material = new CourseMaterial();
+        $material = new CourseMaterial;
 
         // Add the url of the saved file, id of the course and type of material
         $material->type = MaterialType::enum($request->type);
@@ -201,7 +198,9 @@ class CourseController extends Controller
         $material->course_id = $course->id;
 
         // Check if the material is saved correctly
-        if (!$material->save()) return redirect()->back()->withErrors(['material' => 'El material no se añadio correctamente']);
+        if (! $material->save()) {
+            return redirect()->back()->withErrors(['material' => 'El material no se añadio correctamente']);
+        }
 
         return redirect()->route('private.courses.index');
     }

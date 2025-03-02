@@ -36,6 +36,7 @@ class UserController extends Controller
 
     /**
      * Handle route to show all users
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|object
      */
     public function private_users()
@@ -47,83 +48,95 @@ class UserController extends Controller
 
     /**
      * Handle route to delete users
-     * @param Request $request
-     * @param User $user
-     * @return RedirectResponse
      */
     public function private_delete_user(Request $request, User $user): RedirectResponse
     {
         // Check if logged user cannot delete users
-        if ($request->user()->cannot('delete', $user)) abort(404);
+        if ($request->user()->cannot('delete', $user)) {
+            abort(404);
+        }
 
         // Check if user to remove has active registrations
-        if ($user->hasActiveRegistrations()) abort(404);
+        if ($user->hasActiveRegistrations()) {
+            abort(404);
+        }
 
         // Check if there is an error deleting user from db
-        if (!$user->delete()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al eliminar el usuario']);
+        if (! $user->delete()) {
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al eliminar el usuario']);
+        }
 
         return redirect()->route('private.users.index');
     }
 
     /**
      * Handle route to change the role to student
-     * @param Request $request
-     * @param User $user
-     * @return RedirectResponse
      */
     public function private_student_role(Request $request, User $user): RedirectResponse
     {
         // Check if logged user cannot update users
-        if ($request->user()->cannot('update', $user)) abort(404);
+        if ($request->user()->cannot('update', $user)) {
+            abort(404);
+        }
 
         // Check if user to update is already student
-        if ($user->isStudent()) abort(404);
+        if ($user->isStudent()) {
+            abort(404);
+        }
 
         $user->role = UserRole::STUDENT;
 
-        if (!$user->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+        if (! $user->save()) {
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+        }
 
         return redirect()->route('private.users.index');
     }
 
     /**
      * Handle route to change the role to teacher
-     * @param Request $request
-     * @param User $user
-     * @return RedirectResponse
      */
     public function private_teacher_role(Request $request, User $user): RedirectResponse
     {
         // Check if logged user cannot update users
-        if ($request->user()->cannot('update', $user)) abort(404);
+        if ($request->user()->cannot('update', $user)) {
+            abort(404);
+        }
 
         // Check if user to update is already student
-        if ($user->isTeacher()) abort(404);
+        if ($user->isTeacher()) {
+            abort(404);
+        }
 
         $user->role = UserRole::TEACHER;
 
-        if (!$user->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+        if (! $user->save()) {
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+        }
 
         return redirect()->route('private.users.index');
     }
 
     /**
      * Handle route to change the role to admin
-     * @param Request $request
-     * @param User $user
-     * @return RedirectResponse
      */
     public function private_admin_role(Request $request, User $user): RedirectResponse
     {
         // Check if logged user cannot update users
-        if ($request->user()->cannot('update', $user)) abort(404);
+        if ($request->user()->cannot('update', $user)) {
+            abort(404);
+        }
 
         // Check if user to update is already student
-        if ($user->isAdmin()) abort(404);
+        if ($user->isAdmin()) {
+            abort(404);
+        }
 
         $user->role = UserRole::ADMIN;
 
-        if (!$user->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+        if (! $user->save()) {
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+        }
 
         return redirect()->route('private.users.index');
     }

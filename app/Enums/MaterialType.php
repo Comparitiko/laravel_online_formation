@@ -16,26 +16,23 @@ enum MaterialType: string
 
     /**
      * Get all material types names
-     * @return array
      */
     public static function names(): array
     {
         return array_map(
-            fn($materialType) => $materialType->name,
+            fn ($materialType) => $materialType->name,
             MaterialType::cases()
         );
     }
 
     /**
      * Search a material type by name
-     * @param $name
-     * @return MaterialType
      */
     public static function enum($name): MaterialType
     {
         return array_filter(
             MaterialType::cases(),
-            fn($materialType) => $materialType->name === $name
+            fn ($materialType) => $materialType->name === $name
         )[0];
     }
 }

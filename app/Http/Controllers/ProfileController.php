@@ -23,7 +23,7 @@ class ProfileController extends Controller
 
         return view('pages.profile.edit', [
             'user' => $request->user(),
-            'tokens' => $tokens
+            'tokens' => $tokens,
         ]);
     }
 
@@ -71,7 +71,9 @@ class ProfileController extends Controller
 
         $token = $request->user()->createToken($tokenName, ['*'], now()->addDay())->plainTextToken;
 
-        if (!$token) return redirect()->back()->withErrors(['token_name' => 'Error al crear el token']);
+        if (! $token) {
+            return redirect()->back()->withErrors(['token_name' => 'Error al crear el token']);
+        }
 
         return redirect()->route('profile.edit');
     }

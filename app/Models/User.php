@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -147,6 +146,7 @@ class User extends Authenticatable
 
     /**
      * Return true if user has active registrations
+     *
      * @return bool
      */
     public function hasActiveRegistrations()
