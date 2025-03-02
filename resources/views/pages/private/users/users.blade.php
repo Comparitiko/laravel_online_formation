@@ -1,4 +1,4 @@
-<x-layouts.private title="Usuario">
+<x-layouts.private title="Usuarios">
     <main class="max-w-6xl mx-auto">
 
         <div class="my-4">
