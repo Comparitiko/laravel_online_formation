@@ -66,6 +66,69 @@ class UserController extends Controller
     }
 
     /**
+     * Handle route to change the role to student
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function private_student_role(Request $request, User $user): RedirectResponse
+    {
+        // Check if logged user cannot update users
+        if ($request->user()->cannot('update', $user)) abort(404);
+
+        // Check if user to update is already student
+        if ($user->isStudent()) abort(404);
+
+        $user->role = UserRole::STUDENT;
+
+        if (!$user->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+
+        return redirect()->route('private.users.index');
+    }
+
+    /**
+     * Handle route to change the role to teacher
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function private_teacher_role(Request $request, User $user): RedirectResponse
+    {
+        // Check if logged user cannot update users
+        if ($request->user()->cannot('update', $user)) abort(404);
+
+        // Check if user to update is already student
+        if ($user->isTeacher()) abort(404);
+
+        $user->role = UserRole::TEACHER;
+
+        if (!$user->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+
+        return redirect()->route('private.users.index');
+    }
+
+    /**
+     * Handle route to change the role to admin
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function private_admin_role(Request $request, User $user): RedirectResponse
+    {
+        // Check if logged user cannot update users
+        if ($request->user()->cannot('update', $user)) abort(404);
+
+        // Check if user to update is already student
+        if ($user->isAdmin()) abort(404);
+
+        $user->role = UserRole::ADMIN;
+
+        if (!$user->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al cambiar el rol del usuario']);
+
+        return redirect()->route('private.users.index');
+    }
+
+    /**
      * Login a user for the API
      *
      * @return JsonResponse
