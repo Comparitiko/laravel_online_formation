@@ -12,6 +12,8 @@ class CourseMaterial extends Model
     /** @use HasFactory<\Database\Factories\CourseMaterialFactory> */
     use HasFactory;
 
+    protected $fillable = ['url', 'type', 'course_id'];
+
     protected $casts = ['type' => MaterialType::class];
 
     public function course(): BelongsTo

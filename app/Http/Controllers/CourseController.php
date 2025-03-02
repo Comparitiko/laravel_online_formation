@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CourseState;
+use App\Enums\MaterialType;
 use App\Enums\UserRole;
+use App\Http\Requests\CourseMaterial\CreateCourseMaterialRequest;
 use App\Http\Requests\Courses\CreateCourseRequest;
 use App\Http\Requests\Courses\CreateFormCourseRequest;
 use App\Http\Requests\Courses\EditFormCourseRequest;
@@ -11,6 +13,7 @@ use App\Http\Resources\Course\AllInfoCourseResource;
 use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\CourseMaterial;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -166,6 +169,12 @@ class CourseController extends Controller
         return redirect()->route('private.courses.index');
     }
 
+    /**
+     * Handle route to add material to a specific course
+     * @param Request $request
+     * @param Course $course
+     * @return View
+     */
     public function private_add_material_course_form(Request $request, Course $course): View
     {
         // Check if user cannot create course materials in the course
@@ -176,14 +185,24 @@ class CourseController extends Controller
         return view('pages.private.courses.add-course-material', ['course' => $course]);
     }
 
-    public function private_add_material_course(Request $request, Course $course): RedirectResponse
+    public function private_add_material_course(CreateCourseMaterialRequest $request, Course $course): RedirectResponse
     {
-        Storage::put('example.txt', 'Contents');
         $path = $request->file('file')->store('files');
 
         if (!$path) {
             return redirect()->back()->withErrors(['file' => 'El archivo no se pudo subir, intentelo de nuevo mas tarde']);
         }
+
+        // Create a new course material
+        $material = new CourseMaterial();
+
+        // Add the url of the saved file, id of the course and type of material
+        $material->type = MaterialType::enum($request->type);
+        $material->url = $path;
+        $material->course_id = $course->id;
+
+        // Check if the material is saved correctly
+        if (!$material->save()) return redirect()->back()->withErrors(['material' => 'El material no se añadio correctamente']);
 
         return redirect()->route('private.courses.index');
     }

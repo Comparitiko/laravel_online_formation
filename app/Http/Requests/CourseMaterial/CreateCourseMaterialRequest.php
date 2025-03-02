@@ -25,18 +25,18 @@ class CreateCourseMaterialRequest extends FormRequest
     {
         return [
             'file' => ['required', 'file', 'mimes:pdf,docx,xlsx,pptx,mp4,mp3,jpg,jpeg,png,gif,txt,csv,zip'],
-            'type' => ['required', Rule::enum(MaterialType::class)],
+            'type' => ['required', Rule::in(MaterialType::names())],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'file.required' => 'El campo file es obligatorio',
-            'file.file' => 'El campo file debe ser un archivo',
-            'file.mimes' => 'El campo file debe ser un archivo de tipo :values',
-            'type.required' => 'El campo type es obligatorio',
-            'type.enum' => 'El campo type debe ser uno de los siguientes valores: :values',
+            'file.required' => 'El archivo es obligatorio',
+            'file.file' => 'El archivo debe ser un archivo',
+            'file.mimes' => 'El archivo debe ser un archivo de tipo :values',
+            'type.required' => 'El tipo del material es obligatorio',
+            'type.in' => 'El tipo del material debe ser uno de los siguientes valores: :values',
         ];
     }
 }
