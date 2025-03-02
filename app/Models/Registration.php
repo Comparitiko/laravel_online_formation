@@ -29,6 +29,17 @@ class Registration extends Pivot
     }
 
     /**
+     * Get all registrations of one teacher
+     * @param User $user
+     * @return array<Registration>
+     */
+    public static function getByTeacher(User $user): array
+    {
+        $courses = $user->teacherCourses();
+        $registrations = Registration::all();
+    }
+
+    /**
      * Get the course that owns the registration.
      */
     public function course(): BelongsTo

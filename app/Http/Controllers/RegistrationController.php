@@ -8,63 +8,18 @@ use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class RegistrationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function private_registrations(Request $request): View
     {
-        //
-    }
+        if ($request->user()->isAdmin()) $registrations = Registration::paginate(10);
+        else $registrations = Registration::getByTeacher($request->user())->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        dd($registrations);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Registration $registration)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Registration $registration)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Registration $registration)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Registration $registration)
-    {
-        //
+        return view('pages.private.registrations.registrations', ['registrations' => $registrations]);
     }
 
     /**

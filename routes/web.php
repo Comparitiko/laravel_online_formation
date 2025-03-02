@@ -111,6 +111,9 @@ Route::middleware('auth')->group(function () {
                         Route::get('/', [RegistrationController::class, 'private_registrations'])
                             ->name('index');
 
+                        Route::get('/search', [RegistrationController::class, 'private_registrations_search'])
+                            ->name('search');
+
                         // Confirm registration route
                         Route::get('/{registration}/confirm', [RegistrationController::class, 'private_confirm_registration'])
                             ->name('confirm');
