@@ -65,9 +65,6 @@ class CoursePolicy
 
     /**
      * Only teacher of the course can create courses materials
-     * @param User $user
-     * @param Course $course
-     * @return bool
      */
     public function createCourseMaterials(User $user, Course $course): bool
     {

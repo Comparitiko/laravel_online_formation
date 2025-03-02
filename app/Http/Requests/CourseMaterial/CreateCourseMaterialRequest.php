@@ -5,7 +5,6 @@ namespace App\Http\Requests\CourseMaterial;
 use App\Enums\MaterialType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 
 class CreateCourseMaterialRequest extends FormRequest
 {
@@ -26,7 +25,7 @@ class CreateCourseMaterialRequest extends FormRequest
     {
         return [
             'file' => ['required', 'file', 'mimes:pdf,docx,xlsx,pptx,mp4,mp3,jpg,jpeg,png,gif,txt,csv,zip'],
-            'type' => ['required', new Enum(MaterialType::class)]
+            'type' => ['required', Rule::enum(MaterialType::class)],
         ];
     }
 

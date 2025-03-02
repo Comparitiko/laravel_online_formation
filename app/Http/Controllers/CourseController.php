@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Enums\CourseState;
 use App\Enums\UserRole;
-use App\Http\Requests\CourseMaterial\CreateCourseMaterialRequest;
 use App\Http\Requests\Courses\CreateCourseRequest;
 use App\Http\Requests\Courses\CreateFormCourseRequest;
 use App\Http\Requests\Courses\EditFormCourseRequest;
@@ -12,7 +11,6 @@ use App\Http\Resources\Course\AllInfoCourseResource;
 use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Category;
 use App\Models\Course;
-use App\Models\CourseMaterial;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -129,11 +127,16 @@ class CourseController extends Controller
     public function private_edit_course_form(Request $request, Course $course): View
     {
         // Check if user can edit a course
-        if ($request->user()->cannot('editCourse', $course)) abort(404);
+        if ($request->user()->cannot('editCourse', $course)) {
+            abort(404);
+        }
 
         // Get teachers names and ids from cache if is admin, if not send only the user of the logged in teacher
-        if ($request->user()->isAdmin()) $teachers = $this->getTeachersNamesFromCache();
-        else $teachers[] = $request->user();
+        if ($request->user()->isAdmin()) {
+            $teachers = $this->getTeachersNamesFromCache();
+        } else {
+            $teachers[] = $request->user();
+        }
 
         // Retrieve categories ids and names from cache
         $categories = $this->getCategoriesNamesFromCache();
@@ -156,7 +159,7 @@ class CourseController extends Controller
         }
 
         // If database fail send an error message
-        if (!$course->update($request->all())) {
+        if (! $course->update($request->all())) {
             return redirect()->back()->with('error', 'Error en el servidor vuelve a intentarlo mas tarde');
         }
 
@@ -166,16 +169,22 @@ class CourseController extends Controller
     public function private_add_material_course_form(Request $request, Course $course): View
     {
         // Check if user cannot create course materials in the course
-        if ($request->user()->cannot('createCourseMaterials', $course)) abort(404);
+        if ($request->user()->cannot('createCourseMaterials', $course)) {
+            abort(404);
+        }
 
         return view('pages.private.courses.add-course-material', ['course' => $course]);
     }
 
-    public function private_add_material_course(CreateCourseMaterialRequest $request, Course $course): RedirectResponse
+    public function private_add_material_course(Request $request, Course $course): RedirectResponse
     {
-//        $request->file('file')->store('files');
+        Storage::put('example.txt', 'Contents');
+        $path = $request->file('file')->store('files');
 
-        Storage::put('files', $request->file());
+        if (!$path) {
+            return redirect()->back()->withErrors(['file' => 'El archivo no se pudo subir, intentelo de nuevo mas tarde']);
+        }
+
         return redirect()->route('private.courses.index');
     }
 

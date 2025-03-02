@@ -12,7 +12,7 @@
                 <x-text-input
                     type="file"
                     name="file"
-                    :value=" old('file') "
+                    :value="old('file')"
                     required
                 />
                 <x-input-error :messages="$errors->get('file')" class="mt-2" />
