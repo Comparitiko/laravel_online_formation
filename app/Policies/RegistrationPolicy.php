@@ -28,7 +28,6 @@ class RegistrationPolicy
         if ($user->id === $registration->student_id) {
             return true;
         }
-        dd($registration);
 
         // Check if the user is the teacher of the course
         if ($user->isTeacherOf($registration->course)) {
@@ -36,5 +35,13 @@ class RegistrationPolicy
         }
 
         return false;
+    }
+
+    public function updateRegistrationState(User $user, Registration $registration): bool
+    {
+        // Check if registration is pending
+        if (!$registration->isPending()) return false;
+
+        return $user->isTeacher() && $user->isTeacherOf($registration->course);
     }
 }

@@ -15,7 +15,10 @@
                 @csrf
 
                 <div>
-                    <x-buttons.primary-button>
+                    <x-buttons.primary-button
+                        type="submit"
+                        class="hover:underline"
+                    >
                         Reenviar verificación de correo electrónico
                     </x-buttons.primary-button>
                 </div>

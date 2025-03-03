@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\User\RegistrationRequest;
+use App\Mail\RegisterMail;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -21,8 +22,8 @@ class RegistrationController extends Controller
      */
     public function private_registrations(Request $request): View
     {
-        if ($request->user()->isAdmin()) $registrations = Registration::paginate(1);
-        else $registrations = Registration::getByTeacher($request->user())->paginate(1);
+        if ($request->user()->isAdmin()) $registrations = Registration::paginate(10);
+        else $registrations = Registration::getByTeacher($request->user())->paginate(10);
 
         return view('pages.private.registrations.registrations', ['registrations' => $registrations]);
     }
@@ -66,7 +67,7 @@ class RegistrationController extends Controller
             }
         }
 
-        $registrations = $registrations->paginate(1);
+        $registrations = $registrations->paginate(10);
 
         return view('pages.private.registrations.registrations', [
             'registrations' => $registrations,
@@ -75,6 +76,55 @@ class RegistrationController extends Controller
             'registration_state' => $registrationState
         ]);
     }
+
+    /**
+     * Handle route to confirm a pending registration
+     * @param Request $request
+     * @param Registration $registration
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function private_confirm_registration(Request $request, Registration $registration)
+    {
+        $user = $request->user();
+
+        // Check if user cannot confirm registrations
+        if ($user->cannot('updateRegistrationState', $registration)) abort(404);
+
+        // Change the state
+        $registration->state = RegistrationState::CONFIRMED;
+
+        if (!$registration->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al confirmar la inscripción']);
+
+        // Send mail notification to the user
+        $registration->student->sendEmailConfirmRegistrationNotification($registration);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Handle route to confirm a pending registration
+     * @param Request $request
+     * @param Registration $registration
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function private_cancel_registration(Request $request, Registration $registration)
+    {
+        $user = $request->user();
+
+        // Check if user cannot confirm registrations
+        if ($user->cannot('updateRegistrationState', $registration)) abort(404);
+
+        // Change the state
+        $registration->state = RegistrationState::CANCELLED;
+
+        if (!$registration->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al confirmar la inscripción']);
+
+        // Send mail notification to the user
+        $registration->student->sendEmailCancelRegistrationNotification($registration);
+
+        return redirect()->back();
+    }
+
 
     /**
      * Create a new registration for a specific student to a specific course

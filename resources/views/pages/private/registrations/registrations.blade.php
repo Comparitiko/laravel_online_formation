@@ -96,7 +96,8 @@
                             {{ $registration->state }}
                         </x-tables.tbody-registration-state-td>
                         <x-tables.tbody-td optional_classes="flex items-center gap-4">
-                            <button>Hola</button>
+                            <x-buttons.confirm-registration-button :registration="$registration" />
+                            <x-buttons.cancel-registration-button :registration="$registration" />
                         </x-tables.tbody-td>
                     </x-tables.tbody-tr>
                 @endforeach

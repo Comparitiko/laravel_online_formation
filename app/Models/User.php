@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\RegistrationState;
 use App\Enums\UserRole;
+use App\Notifications\CancelRegistrationEmail;
+use App\Notifications\ConfirmRegistrationEmail;
 use App\Notifications\VerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,6 +66,16 @@ class User extends Authenticatable
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail);
+    }
+
+    public function sendEmailConfirmRegistrationNotification(Registration $registration)
+    {
+        $this->notify(new ConfirmRegistrationEmail($registration));
+    }
+
+    public function sendEmailCancelRegistrationNotification(Registration $registration)
+    {
+        $this->notify(new CancelRegistrationEmail($registration));
     }
 
     /**

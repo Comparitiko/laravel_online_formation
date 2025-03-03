@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.btn {
+    @apply bg-[#007bff] text-white py-[10px] px-[20px] text-center rounded-md
+}
+.footer {
+    @apply mt-[20px] text-[12px] text-[#888]
+}

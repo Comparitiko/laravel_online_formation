@@ -74,4 +74,9 @@ class Registration extends Pivot
     {
         return $this->course->state === CourseState::ACTIVE;
     }
+
+    public function isPending(): bool
+    {
+        return $this->state === RegistrationState::PENDING;
+    }
 }
