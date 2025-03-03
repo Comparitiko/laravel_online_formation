@@ -40,7 +40,9 @@ class RegistrationPolicy
     public function updateRegistrationState(User $user, Registration $registration): bool
     {
         // Check if registration is pending
-        if (!$registration->isPending()) return false;
+        if (! $registration->isPending()) {
+            return false;
+        }
 
         return $user->isTeacher() && $user->isTeacherOf($registration->course);
     }

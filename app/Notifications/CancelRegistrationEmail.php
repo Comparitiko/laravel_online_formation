@@ -6,7 +6,6 @@ use App\Models\Registration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
 
 class CancelRegistrationEmail extends Notification
 {
@@ -38,7 +37,7 @@ class CancelRegistrationEmail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Has sido rechazado/a del curso ' . $this->registration->course->name)
+            ->subject('Has sido rechazado/a del curso '.$this->registration->course->name)
             ->view('mail.cancel-registration-mail', [
                 'user' => $notifiable,
                 'registration' => $this->registration,

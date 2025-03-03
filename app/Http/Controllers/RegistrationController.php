@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\User\RegistrationRequest;
-use App\Mail\RegisterMail;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -17,20 +16,21 @@ class RegistrationController extends Controller
     /**
      * Handle route to show registrations, if the user is admin show all, if is teacher, show only his courses
      * registrations
-     * @param Request $request
-     * @return View
      */
     public function private_registrations(Request $request): View
     {
-        if ($request->user()->isAdmin()) $registrations = Registration::paginate(10);
-        else $registrations = Registration::getByTeacher($request->user())->paginate(10);
+        if ($request->user()->isAdmin()) {
+            $registrations = Registration::paginate(10);
+        } else {
+            $registrations = Registration::getByTeacher($request->user())->paginate(10);
+        }
 
         return view('pages.private.registrations.registrations', ['registrations' => $registrations]);
     }
 
     /**
      * Handle route to search registrations with the filters
-     * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|object
      */
     public function private_registrations_search(Request $request)
@@ -44,23 +44,23 @@ class RegistrationController extends Controller
         if ($request->user()->isAdmin()) {
             // Get all with the filters
             $registrations = Registration::whereHas('course', function ($query) use ($courseName) {
-                $query->where('name', 'like', '%' . $courseName . '%');
+                $query->where('name', 'like', '%'.$courseName.'%');
             })
                 ->whereHas('student', function ($query) use ($studentName) {
-                    $query->where('name', 'like', '%' . $studentName . '%');
+                    $query->where('name', 'like', '%'.$studentName.'%');
                 });
 
             if ($registrationState) {
                 $registrations = $registrations->where('state', $registrationStateEnum);
-            };
+            }
         } else {
             // Get registrations by teacher with the filters
             $registrations = Registration::getByTeacher($request->user())
                 ->whereHas('course', function ($query) use ($courseName) {
-                    $query->where('name', 'like', '%' . $courseName . '%');
+                    $query->where('name', 'like', '%'.$courseName.'%');
                 })
                 ->whereHas('student', function ($query) use ($studentName) {
-                    $query->where('name', 'like', '%' . $studentName . '%');
+                    $query->where('name', 'like', '%'.$studentName.'%');
                 });
             if ($registrationState) {
                 $registrations = $registrations->where('state', $registrationStateEnum);
@@ -73,14 +73,13 @@ class RegistrationController extends Controller
             'registrations' => $registrations,
             'course_name' => $courseName,
             'student_name' => $studentName,
-            'registration_state' => $registrationState
+            'registration_state' => $registrationState,
         ]);
     }
 
     /**
      * Handle route to confirm a pending registration
-     * @param Request $request
-     * @param Registration $registration
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function private_confirm_registration(Request $request, Registration $registration)
@@ -88,12 +87,16 @@ class RegistrationController extends Controller
         $user = $request->user();
 
         // Check if user cannot confirm registrations
-        if ($user->cannot('updateRegistrationState', $registration)) abort(404);
+        if ($user->cannot('updateRegistrationState', $registration)) {
+            abort(404);
+        }
 
         // Change the state
         $registration->state = RegistrationState::CONFIRMED;
 
-        if (!$registration->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al confirmar la inscripción']);
+        if (! $registration->save()) {
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al confirmar la inscripción']);
+        }
 
         // Send mail notification to the user
         $registration->student->sendEmailConfirmRegistrationNotification($registration);
@@ -103,8 +106,7 @@ class RegistrationController extends Controller
 
     /**
      * Handle route to confirm a pending registration
-     * @param Request $request
-     * @param Registration $registration
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function private_cancel_registration(Request $request, Registration $registration)
@@ -112,19 +114,22 @@ class RegistrationController extends Controller
         $user = $request->user();
 
         // Check if user cannot confirm registrations
-        if ($user->cannot('updateRegistrationState', $registration)) abort(404);
+        if ($user->cannot('updateRegistrationState', $registration)) {
+            abort(404);
+        }
 
         // Change the state
         $registration->state = RegistrationState::CANCELLED;
 
-        if (!$registration->save()) return redirect()->back()->withErrors(['error' => 'Hubo un problema al confirmar la inscripción']);
+        if (! $registration->save()) {
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al confirmar la inscripción']);
+        }
 
         // Send mail notification to the user
         $registration->student->sendEmailCancelRegistrationNotification($registration);
 
         return redirect()->back();
     }
-
 
     /**
      * Create a new registration for a specific student to a specific course

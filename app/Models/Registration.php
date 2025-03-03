@@ -7,9 +7,7 @@ use App\Enums\RegistrationState;
 use Database\Factories\RegistrationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Support\Facades\Cache;
 
 class Registration extends Pivot
 {
@@ -32,7 +30,6 @@ class Registration extends Pivot
 
     /**
      * Get all registrations of one teacher
-     * @param User $user
      */
     public static function getByTeacher(User $user)
     {
