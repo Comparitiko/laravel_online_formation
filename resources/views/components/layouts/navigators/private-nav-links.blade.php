@@ -22,7 +22,7 @@
     Evaluaciones
 </x-nav-link>
 <!-- Only show this to admins -->
-@if(Auth::user()->role === UserRole::ADMIN)
+@if(Auth::user()->isAdmin())
     <x-nav-link
         :href="route('private.users.index')"
         :active="request()->is('/private/users/*') || request()->routeIs('private.users.index')"

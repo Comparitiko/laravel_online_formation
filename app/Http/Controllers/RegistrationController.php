@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\User\RegistrationRequest;
 use App\Models\Registration;
@@ -12,14 +13,67 @@ use Illuminate\View\View;
 
 class RegistrationController extends Controller
 {
+    /**
+     * Handle route to show registrations, if the user is admin show all, if is teacher, show only his courses
+     * registrations
+     * @param Request $request
+     * @return View
+     */
     public function private_registrations(Request $request): View
     {
-        if ($request->user()->isAdmin()) $registrations = Registration::paginate(10);
-        else $registrations = Registration::getByTeacher($request->user())->paginate(10);
-
-        dd($registrations);
+        if ($request->user()->isAdmin()) $registrations = Registration::paginate(1);
+        else $registrations = Registration::getByTeacher($request->user())->paginate(1);
 
         return view('pages.private.registrations.registrations', ['registrations' => $registrations]);
+    }
+
+    /**
+     * Handle route to search registrations with the filters
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|object
+     */
+    public function private_registrations_search(Request $request)
+    {
+        $courseName = $request->get('course_name', '');
+        $studentName = $request->get('student_name', '');
+        $registrationState = $request->get('registration_state', '');
+
+        $registrationStateEnum = RegistrationState::enum($registrationState) ?? '';
+
+        if ($request->user()->isAdmin()) {
+            // Get all with the filters
+            $registrations = Registration::whereHas('course', function ($query) use ($courseName) {
+                $query->where('name', 'like', '%' . $courseName . '%');
+            })
+                ->whereHas('student', function ($query) use ($studentName) {
+                    $query->where('name', 'like', '%' . $studentName . '%');
+                });
+
+            if ($registrationState) {
+                $registrations = $registrations->where('state', $registrationStateEnum);
+            };
+        } else {
+            // Get registrations by teacher with the filters
+            $registrations = Registration::getByTeacher($request->user())
+                ->whereHas('course', function ($query) use ($courseName) {
+                    $query->where('name', 'like', '%' . $courseName . '%');
+                })
+                ->whereHas('student', function ($query) use ($studentName) {
+                    $query->where('name', 'like', '%' . $studentName . '%');
+                });
+            if ($registrationState) {
+                $registrations = $registrations->where('state', $registrationStateEnum);
+            }
+        }
+
+        $registrations = $registrations->paginate(1);
+
+        return view('pages.private.registrations.registrations', [
+            'registrations' => $registrations,
+            'course_name' => $courseName,
+            'student_name' => $studentName,
+            'registration_state' => $registrationState
+        ]);
     }
 
     /**

@@ -30,9 +30,9 @@ enum MaterialType: string
      */
     public static function enum($name): MaterialType
     {
-        return array_filter(
+        return array_find(
             MaterialType::cases(),
             fn ($materialType) => $materialType->name === $name
-        )[0];
+        );
     }
 }

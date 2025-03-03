@@ -7,7 +7,9 @@ use App\Enums\RegistrationState;
 use Database\Factories\RegistrationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Facades\Cache;
 
 class Registration extends Pivot
 {
@@ -31,12 +33,12 @@ class Registration extends Pivot
     /**
      * Get all registrations of one teacher
      * @param User $user
-     * @return array<Registration>
      */
-    public static function getByTeacher(User $user): array
+    public static function getByTeacher(User $user)
     {
-        $courses = $user->teacherCourses();
-        $registrations = Registration::all();
+        return Registration::whereHas('course', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
     }
 
     /**

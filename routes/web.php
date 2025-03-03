@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
+// About us route
+Route::get('/about-us', [InfoController::class, 'about_us'])->name('about-us');
+
 Route::middleware('auth')->group(function () {
     // Index route
     Route::get('/', [UserController::class, 'index'])->name('index');
-
-    // About us route
-    Route::get('/about-us', [InfoController::class, 'about_us'])->name('about-us');
 
     // Only verified users can enter here
     Route::middleware('verified')->group(function () {
