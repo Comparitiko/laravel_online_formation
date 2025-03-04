@@ -43,6 +43,9 @@ Route::middleware('auth')->group(function () {
                         Route::get('/', [CourseController::class, 'public_course_index'])
                             ->name('index');
 
+                        // Search courses route
+                        Route::get('/search', [CourseController::class, 'public_course_search'])->name('search');
+
                         // Registered courses route
                         Route::get('/registered', [CourseController::class, 'public_course_registered'])
                             ->name('registered');

@@ -210,7 +210,9 @@ class CourseController extends Controller
      */
     public function public_course_index(): View
     {
-        return view('pages.public.courses.courses');
+        // Get all active courses
+        $courses = Course::where('state', CourseState::ACTIVE)->paginate(10);
+        return view('pages.public.courses.courses', ['courses' => $courses]);
     }
 
     /**
