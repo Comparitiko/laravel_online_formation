@@ -48,7 +48,7 @@ class VerifyEmail extends Notification
     /**
      * Generate the URL to the verification link.
      */
-    protected function verificationUrl($notifiable)
+    protected function verificationUrl($notifiable): string
     {
         return URL::temporarySignedRoute(
             'verification.verify',

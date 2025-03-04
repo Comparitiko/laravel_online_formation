@@ -68,6 +68,11 @@ class User extends Authenticatable
         $this->notify(new VerifyEmail);
     }
 
+    public function getEmailForVerification()
+    {
+        return $this->email;
+    }
+
     public function sendEmailConfirmRegistrationNotification(Registration $registration)
     {
         $this->notify(new ConfirmRegistrationEmail($registration));
