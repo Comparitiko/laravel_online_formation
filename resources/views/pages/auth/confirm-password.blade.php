@@ -1,4 +1,4 @@
-<x-layouts.guest-layout title="Cnfirmar contraseña">
+<x-layouts.guest title="Cnfirmar contraseña">
     <div class="mb-4 text-sm text-gray-600">
         {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </div>
@@ -24,4 +24,4 @@
             </x-buttons.primary-button>
         </div>
     </form>
-</x-layouts.guest-layout>
+</x-layouts.guest>
