@@ -22,7 +22,7 @@ class CreateEvaluationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'final_note' => ['required', 'number', 'min:0', 'max:10'],
+            'final_note' => ['required', 'numeric', 'min:0', 'max:10'],
             'comments' => ['required', 'string', 'max:255'],
         ];
     }

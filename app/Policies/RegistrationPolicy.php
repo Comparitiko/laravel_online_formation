@@ -58,7 +58,7 @@ class RegistrationPolicy
         if (
             $user->isTeacher()
             && $user->isTeacherOf($registration->course)
-            && $registration->isActive()
+
             && ! $registration->evaluation()
         ) {
             return true;
