@@ -38,6 +38,19 @@ class Registration extends Pivot
         });
     }
 
+    public static function getConfirmed(User $user)
+    {
+        return Registration::where('state', RegistrationState::CONFIRMED);
+    }
+
+    public static function getConfirmedByTeacher(User $user)
+    {
+        return Registration::where('state', RegistrationState::CONFIRMED)
+            ->whereHas('course', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            });
+    }
+
     /**
      * Get the course that owns the registration.
      */
@@ -75,5 +88,18 @@ class Registration extends Pivot
     public function isPending(): bool
     {
         return $this->state === RegistrationState::PENDING;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->state === RegistrationState::CONFIRMED && $this->course->isActive();
+    }
+
+    /**
+     * Get evaluation of the registration
+     */
+    public function evaluation(): ?Evaluation
+    {
+        return Evaluation::where('student_id', $this->student_id)->where('course_id', $this->course_id)->first();
     }
 }

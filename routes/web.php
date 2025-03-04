@@ -127,16 +127,13 @@ Route::middleware('auth')->group(function () {
                 Route::prefix('/evaluations')
                     ->name('evaluations.')
                     ->group(function () {
-                        // Index evaluations route // Show all evaluations for admins and show only evaluable
-                        // students and courses
                         Route::get('/', [EvaluationController::class, 'private_evaluations'])
-                            ->name('index')
-                            ->middleware('role:'.UserRole::ADMIN->value);
+                            ->name('index');
 
                         // Create evaluations routes
-                        Route::get('/create', [EvaluationController::class, 'private_create_evaluation_form'])
+                        Route::get('/{registration}/create', [EvaluationController::class, 'private_create_evaluation_form'])
                             ->name('create-form');
-                        Route::post('/', [EvaluationController::class, 'private_create_evaluation'])
+                        Route::post('/{registration}/create', [EvaluationController::class, 'private_create_evaluation'])
                             ->name('create');
                     });
 

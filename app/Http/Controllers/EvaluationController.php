@@ -2,64 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Evaluation\CreateEvaluationRequest;
 use App\Models\Evaluation;
+use App\Models\Registration;
 use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function private_evaluations(Request $request)
     {
-        //
+        $user = $request->user();
+        if ($user->isAdmin()) {
+            $registrations = Registration::getConfirmed($user)->paginate(10);
+        } else {
+            $registrations = Registration::getConfirmedByTeacher($user)->paginate(10);
+        }
+
+        return view('pages.private.evaluations.evaluations', [
+            'registrations' => $registrations,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function private_create_evaluation_form(Request $request, Registration $registration)
     {
-        //
+        // Ckeck if the user cannot create evaluations of that registration
+        if ($request->user()->cannot('createEvaluations', $registration)) {
+            abort(404);
+        }
+
+        return view('pages.private.evaluations.create-evaluation', ['registration' => $registration]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function private_create_evaluation(CreateEvaluationRequest $request, Registration $registration)
     {
-        //
-    }
+        // Ckeck if the user cannot create evaluations of that registration
+        if ($request->user()->cannot('createEvaluations', $registration)) {
+            abort(404);
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Evaluation $evaluation)
-    {
-        //
-    }
+        // Create evaluation
+        $evaluation = new Evaluation;
+        $evaluation->fill($request->all());
+        $evaluation->student_id = $registration->student_id;
+        $evaluation->course_id = $registration->course_id;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Evaluation $evaluation)
-    {
-        //
-    }
+        // Save evaluation
+        if (! $evaluation->save()) {
+            return back()->withErrors(['error' => 'Ha surgido un error al crear la evaluación']);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Evaluation $evaluation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Evaluation $evaluation)
-    {
-        //
+        return redirect()->route('private.evaluations.index');
     }
 }
