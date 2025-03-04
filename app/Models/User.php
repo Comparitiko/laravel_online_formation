@@ -171,4 +171,15 @@ class User extends Authenticatable
 
         return $numRegistrations !== 0;
     }
+
+    public function initials()
+    {
+        return $this->name[0] . $this->surnames[0];
+    }
+
+    public function isRegistered(Course $course)
+    {
+        return Registration::where('course_id', $course->id)
+            ->where('student_id', $this->id)->count() !== 0;
+    }
 }

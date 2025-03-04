@@ -44,7 +44,7 @@
                 <div>
                     <x-input-label for="course_name">Nombre curso</x-input-label>
                     <x-text-input
-                        type="number"
+                        type="text"
                         name="course_name"
                         id="course_name"
                         :value="old('$course_name', $course_name)"
@@ -63,8 +63,10 @@
                 </div>
             </form>
         </div>
-        <section class="my-4">
-            Cursos
+        <section class="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            @foreach($courses as $course)
+                <x-cards.course-card :course="$course" />
+            @endforeach
         </section>
         <x-courses-paginator
             :courses="$courses"

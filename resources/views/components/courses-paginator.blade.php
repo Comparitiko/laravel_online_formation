@@ -11,8 +11,8 @@
 <div class="mt-5 flex justify-between items-center">
     <a
         @if($currentPage !== 1)
-            href="{{ $previousPage }}&course_name={{ $course_name }}&student_name={{ $student_name
-            }}&registration_state={{ $registration_state }}"
+            href="{{ $previousPage }}&course_name={{ $course_name }}&category={{ $category
+            }}&duration={{ $duration }}"
         @endif
         class="{{$currentPage === 1 ? 'disabled-btn' : 'btn-primary'}}"
     >

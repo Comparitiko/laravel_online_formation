@@ -216,6 +216,31 @@ class CourseController extends Controller
     }
 
     /**
+     * Handle the route to show all courses with the filters in the public side of the web
+     */
+    public function public_course_search(Request $request)
+    {
+        $course_name = '%' . $request->course_name . '%';
+        $category = '%' . $request->category . '%';
+        $duration = $request->duration ?? 0;
+
+        $courses = Course::where('state', CourseState::ACTIVE)
+            ->whereHas('category', function ($query) use ($category) {
+                $query->where('course_area_name', 'LIKE', $category);
+            })
+            ->where('duration', '>=', $duration)
+            ->where('name', 'LIKE', $course_name)
+            ->paginate(10);
+
+        return view('pages.public.courses.courses', [
+            'courses' => $courses,
+            'course_name' => $request->course_name,
+            'category' => $request->category,
+            'duration' => $request->duration,
+        ]);
+    }
+
+    /**
      * Handle route to show all courses in API
      *
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
