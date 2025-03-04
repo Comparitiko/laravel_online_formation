@@ -12,8 +12,8 @@ class CourseMaterialController extends Controller {
         if ($request->user()->cannot('seeCourseMaterials', $course)) abort(404);
 
         // Get materials of the course with the course relationship eager
-        $materials = $course->materials()->with('course')->get();
+        $materials = $course->materials()->orderBy('type')->get();
 
-        return view('pages.public.materials.index', ['materials' => $materials]);
+        return view('pages.public.materials.materials', ['materials' => $materials, 'course' => $course]);
     }
 }
