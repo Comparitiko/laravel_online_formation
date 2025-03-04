@@ -52,7 +52,7 @@ class VerifyEmail extends Notification
     {
         return URL::temporarySignedRoute(
             'verification.verify',
-            now()->addMinutes(15),
+            now()->addDay(),
             ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
         );
     }
