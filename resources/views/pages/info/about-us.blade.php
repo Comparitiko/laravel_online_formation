@@ -6,7 +6,8 @@
 
         <article class="mx-auto w-1/2">
             <p class="mb-6">
-                En <span class="text-xl text-bold">{{config('app.name')}}</span>, creemos que la educación debe ser
+                En <span class="text-xl text-bold text-red-700">{{config('app.name')}}</span>, creemos que la educación debe
+                ser
                 accesible,
                 flexible y de
                 calidad. Por eso, hemos creado un espacio de aprendizaje online diseñado para ayudarte a desarrollar nuevas habilidades, mejorar tu carrera y alcanzar tus metas personales y profesionales.
@@ -21,9 +22,9 @@
             <p class="mb-6">
                 Únete a nuestra comunidad de estudiantes y da el siguiente paso en tu formación. ¡El conocimiento está a un clic de distancia!
             </p>
-            <x-primary-button onclick="history.back()">
+            <x-buttons.primary-button onclick="history.back()">
                 Volver
-            </x-primary-button>
+            </x-buttons.primary-button>
         </article>
 
     </main>
