@@ -38,6 +38,6 @@ class RegisteredUserController extends Controller
         // Log in the user
         Auth::login($user);
 
-        return redirect(route('verification.notice', absolute: false));
+        return redirect(route('index', absolute: false));
     }
 }
