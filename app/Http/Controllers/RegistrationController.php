@@ -139,7 +139,7 @@ class RegistrationController extends Controller
             abort(404);
         }
 
-        $registration = new Registration();
+        $registration = new Registration;
         $registration->student_id = $request->user()->id;
         $registration->course_id = $course->id;
         $registration->state = RegistrationState::PENDING;

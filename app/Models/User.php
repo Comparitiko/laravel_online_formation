@@ -185,7 +185,7 @@ class User extends Authenticatable
 
     /**
      * Check if the user is a student of the course with confirmed registration
-     * @param Course $course
+     *
      * @return bool
      */
     public function isConfirmedStudentOf(Course $course)
