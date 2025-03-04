@@ -14,6 +14,7 @@ use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseMaterial;
+use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -238,6 +239,20 @@ class CourseController extends Controller
             'category' => $request->category,
             'duration' => $request->duration,
         ]);
+    }
+
+    public function public_course_registered(Request $request)
+    {
+        $user = $request->user();
+        // Get all courses registered by user
+        $registeredCourses = Course::whereHas('registrations',
+            function ($query) use ($user) {
+                $query->where('student_id', $user->id);
+            })
+            ->where('state', CourseState::ACTIVE)
+            ->paginate(10);
+
+        return view('pages.public.courses.courses', ['courses' => $registeredCourses ]);
     }
 
     /**
