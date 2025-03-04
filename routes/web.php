@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
                     ->name('registrations.')
                     ->group(function () {
                         // Create registration to a course
-                        Route::get('/{course}')
+                        Route::get('/{course}', [RegistrationController::class, 'public_create_registration'])
                             ->name('create');
                     });
             });

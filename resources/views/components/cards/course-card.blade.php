@@ -39,7 +39,11 @@ hover:scale-105">
     <section>
         <!-- Price and Action -->
         <div class="px-6 py-4 bg-gray-800 flex justify-between items-center">
-            <x-cards.components.registration-button :course="$course" />
+            @if(request()->routeIs('students.courses.registered'))
+                <x-cards.components.materials-button :course="$course" />
+            @else
+                <x-cards.components.registration-button :course="$course" />
+            @endif
         </div>
 
         <!-- Tags -->

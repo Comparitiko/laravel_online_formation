@@ -70,4 +70,41 @@ class CoursePolicy
     {
         return $user->isTeacher() && $user->isTeacherOf($course);
     }
+
+    /**
+     * Only teacher of the course and a student with a confirmed registration can see the course materials
+     * @param User $user
+     * @param Course $course
+     * @return bool
+     */
+    public function seeCourseMaterials(User $user, Course $course): bool
+    {
+        // Check if user is the teacher of the course
+        if ( $user->isTeacherOf($course)) return true;
+
+        // Check if the course is active
+        if (! $course->isActive()) return false;
+
+        // Check if the user is a student with a confirmed registration of the course
+        if (! $user->isConfirmedStudentOf($course)) return false;
+
+        return true;
+    }
+
+    /**
+     * Check if the user can create a registration to the course
+     * @param User $user
+     * @param Course $course
+     * @return bool
+     */
+    public function createRegistration(User $user, Course $course): bool
+    {
+        // Check is already registered on the course
+        if ($user->isRegistered($course)) return false;
+
+        // Check if the user is student
+        if (! $user->isStudent()) return false;
+
+        return true;
+    }
 }

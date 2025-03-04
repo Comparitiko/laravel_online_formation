@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\User\RegistrationRequest;
+use App\Models\Course;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -127,6 +128,25 @@ class RegistrationController extends Controller
 
         // Send mail notification to the user
         $registration->student->sendEmailCancelRegistrationNotification($registration);
+
+        return redirect()->back();
+    }
+
+    public function public_create_registration(Request $request, Course $course)
+    {
+        // Check if user can create a registration
+        if ($request->user()->cannot('createRegistration', $course)) {
+            abort(404);
+        }
+
+        $registration = new Registration();
+        $registration->student_id = $request->user()->id;
+        $registration->course_id = $course->id;
+        $registration->state = RegistrationState::PENDING;
+
+        if (! $registration->save()) {
+            return redirect()->back()->withErrors(['error' => 'Hubo un problema al crear la inscripción']);
+        }
 
         return redirect()->back();
     }

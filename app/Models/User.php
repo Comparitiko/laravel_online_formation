@@ -182,4 +182,18 @@ class User extends Authenticatable
         return Registration::where('course_id', $course->id)
             ->where('student_id', $this->id)->count() !== 0;
     }
+
+    /**
+     * Check if the user is a student of the course with confirmed registration
+     * @param Course $course
+     * @return bool
+     */
+    public function isConfirmedStudentOf(Course $course)
+    {
+        return Registration::query()
+            ->where('course_id', $course->id)
+            ->where('student_id', $this->id)
+            ->where('state', RegistrationState::CONFIRMED)
+            ->exists();
+    }
 }

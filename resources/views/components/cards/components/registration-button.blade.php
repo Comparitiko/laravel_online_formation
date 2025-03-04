@@ -2,6 +2,7 @@
 
 @php
     use Illuminate\Support\Facades\Auth;
+    use App\Enums\RegistrationState;
     $registered = Auth::user()->isRegistered($course)
 @endphp
 
@@ -17,7 +18,7 @@
 >
     {{
       $registered
-        ? 'Inscrito'
+        ? 'Inscripcion ' . RegistrationState::translate($course->registrationByStudent(Auth::user())->state)
         : 'Inscribirse'
     }}
 </a>

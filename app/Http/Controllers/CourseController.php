@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\CourseState;
 use App\Enums\MaterialType;
+use App\Enums\RegistrationState;
 use App\Enums\UserRole;
 use App\Http\Requests\CourseMaterial\CreateCourseMaterialRequest;
 use App\Http\Requests\Courses\CreateCourseRequest;
@@ -247,7 +248,8 @@ class CourseController extends Controller
         // Get all courses registered by user
         $registeredCourses = Course::whereHas('registrations',
             function ($query) use ($user) {
-                $query->where('student_id', $user->id);
+                $query->where('student_id', $user->id)
+                    ->where('state', RegistrationState::CONFIRMED);
             })
             ->where('state', CourseState::ACTIVE)
             ->paginate(10);

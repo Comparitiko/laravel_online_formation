@@ -98,4 +98,9 @@ class Course extends Model
     {
         return $this->state === CourseState::ACTIVE;
     }
+
+    public function registrationByStudent(User $user)
+    {
+        return $this->registrations()->where('student_id', $user->id)->first();
+    }
 }
