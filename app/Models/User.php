@@ -174,7 +174,7 @@ class User extends Authenticatable
 
     public function initials()
     {
-        return $this->name[0] . $this->surnames[0];
+        return $this->name[0].$this->surnames[0];
     }
 
     public function isRegistered(Course $course)

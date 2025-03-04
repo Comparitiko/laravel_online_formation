@@ -14,7 +14,6 @@ use App\Http\Resources\Course\BaseCourseResource;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseMaterial;
-use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
@@ -213,6 +212,7 @@ class CourseController extends Controller
     {
         // Get all active courses
         $courses = Course::where('state', CourseState::ACTIVE)->paginate(10);
+
         return view('pages.public.courses.courses', ['courses' => $courses]);
     }
 
@@ -221,8 +221,8 @@ class CourseController extends Controller
      */
     public function public_course_search(Request $request)
     {
-        $course_name = '%' . $request->course_name . '%';
-        $category = '%' . $request->category . '%';
+        $course_name = '%'.$request->course_name.'%';
+        $category = '%'.$request->category.'%';
         $duration = $request->duration ?? 0;
 
         $courses = Course::where('state', CourseState::ACTIVE)
@@ -252,7 +252,7 @@ class CourseController extends Controller
             ->where('state', CourseState::ACTIVE)
             ->paginate(10);
 
-        return view('pages.public.courses.courses', ['courses' => $registeredCourses ]);
+        return view('pages.public.courses.courses', ['courses' => $registeredCourses]);
     }
 
     /**
